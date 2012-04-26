@@ -37,6 +37,6 @@
 [submodule "bundle/unimpaired"]
 	path = bundle/unimpaired
 	url = https://github.com/tpope/vim-unimpaired.git
-[submodule "bundle/solarized"]
-	path = bundle/solarized
+[submodule "bundle/vim-solarized"]
+	path = bundle/vim-solarized
 	url = https://github.com/altercation/vim-colors-solarized.git
