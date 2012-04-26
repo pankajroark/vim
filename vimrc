@@ -55,6 +55,7 @@ nmap <C-S-c> :s/^/#/<CR>j
 map <D-up> :vertical resize +5<cr>
 map <C-down> :vertical resize -5<cr>
 
+set background=light
 colorscheme solarized
 
 map <D-e> <C-e>
