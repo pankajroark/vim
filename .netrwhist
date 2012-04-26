@@ -1,0 +1,7 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =5
+let g:netrw_dirhist_1='/Users/pankaj/git/btrll_pig'
+let g:netrw_dirhist_2='/Users/pankaj/git/btrll_pig/src/main/java/mbbv'
+let g:netrw_dirhist_3='/Users/pankaj/git/btrll_pig'
+let g:netrw_dirhist_4='/Users/pankaj/work/pig/cookielog'
+let g:netrw_dirhist_5='/Users/pankaj/work/rails'
