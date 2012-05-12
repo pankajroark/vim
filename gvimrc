@@ -77,9 +77,12 @@ augroup END
 
 "macvim fullscreen
 if has("gui_running")
-  set fuoptions=maxvert,maxhorz
-  au GUIEnter * set fullscreen
+  "set fuoptions=maxvert,maxhorz
+  "au GUIEnter * set fullscreen
 endif
 
 "CloseMiniBufExplorer by default
 map <F7> :TMiniBufExplorer<CR>
+
+" Set a large font
+set guifont=Menlo\ Regular:h18

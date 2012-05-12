@@ -80,3 +80,6 @@ set laststatus=2
 augroup filetypedetect 
   au BufNewFile,BufRead *.pig set filetype=pig syntax=pig 
 augroup END 
+
+" matchit
+runtime macros/matchit.vim

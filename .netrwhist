@@ -1,7 +1,10 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =5
+let g:netrw_dirhist_cnt =8
 let g:netrw_dirhist_1='/Users/pankaj/git/btrll_pig'
-let g:netrw_dirhist_2='/Users/pankaj/git/btrll_pig/src/main/java/mbbv'
+let g:netrw_dirhist_2='/Users/pankaj/git/reporting'
 let g:netrw_dirhist_3='/Users/pankaj/git/btrll_pig'
-let g:netrw_dirhist_4='/Users/pankaj/work/pig/cookielog'
-let g:netrw_dirhist_5='/Users/pankaj/work/rails'
+let g:netrw_dirhist_4='/Users/pankaj/git/emr'
+let g:netrw_dirhist_5='/Users/pankaj/git/api.rpt'
+let g:netrw_dirhist_6='/Users/pankaj/git/btrll_pig'
+let g:netrw_dirhist_7='/Users/pankaj/git/btrll_pig/data'
+let g:netrw_dirhist_8='/Users/pankaj/git/forecasting'
