@@ -50,7 +50,7 @@ nmap <C-S-c> :s/^/#/<CR>j
 map <D-up> :vertical resize +5<cr>
 map <C-down> :vertical resize -5<cr>
 
-set background=light
+set background=dark
 colorscheme solarized
 
 map <D-e> <C-e>
@@ -141,3 +141,8 @@ nnoremap <LEADER>cwi :set wildignore=''<cr>:echo 'Wildignore cleared'<cr>
 
 " Mapping for current file path on ex
 cnoremap <expr> %% getcmdtype() == ':' ? expand('%:h').'/' : '%%'
+
+" Let ctrlp ignore gitignore files
+let g:ctrlp_working_path_mode = 2
+set wildignore+=*.so,*.class,*.o,*.jar,*.swp,*.zip
+let g:ctrlp_user_command = ['.git/', 'cd %s && git ls-files']

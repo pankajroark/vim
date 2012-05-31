@@ -1,0 +1,30 @@
+[user]
+	name = Pankaj Gupta
+	email = pankaj@brightroll.com
+[color]
+	ui = true
+  branch = auto
+  diff = auto
+  status = auto
+  interactive = auto
+[alias]
+  ann = annotate
+  st = status
+  ci = commit
+  br = branch
+  co = checkout
+  df = diff --no-ext-diff
+  dfc = diff --no-ext-diff --word-diff-regex=.
+  dfw = diff --no-ext-diff --word-diff
+  dfe = diff --ext-diff
+  lg = log -p
+  lol = log --graph --decorate --pretty=oneline --abbrev-commit
+  lola = log --graph --decorate --pretty=oneline --abbrev-commit --all
+  mrg = merge --no-ff --no-commit
+  wiff = diff --color-words
+	unstage = reset HEAD --
+	last = log -1 HEAD
+[core]
+  editor = vim
+	quotepath = false
+	excludesfile = /Users/pankaj/.gitignore
