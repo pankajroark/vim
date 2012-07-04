@@ -45,6 +45,8 @@ if has("autocmd")
 endif
 
 nmap <leader>v :tabedit $MYGVIMRC<CR>
+nmap <leader>xt :tabedit $HOME/.todo<CR>
+nmap <leader>xy :tabedit $HOME/.today<CR>
 nmap <C-S-c> :s/^/#/<CR>j
 
 map <D-up> :vertical resize +5<cr>
@@ -146,3 +148,6 @@ cnoremap <expr> %% getcmdtype() == ':' ? expand('%:h').'/' : '%%'
 let g:ctrlp_working_path_mode = 2
 set wildignore+=*.so,*.class,*.o,*.jar,*.swp,*.zip
 let g:ctrlp_user_command = ['.git/', 'cd %s && git ls-files']
+
+" set dictionary
+set dictionary +=~/.vim/dict
