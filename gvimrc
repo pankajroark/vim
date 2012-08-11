@@ -88,7 +88,7 @@ endif
 map <F7> :TMiniBufExplorer<CR>
 
 " Set a large font
-set guifont=Menlo\ Regular:h18
+set guifont=Menlo\ Regular:h14
 au! BufRead,BufNewFile buildfile set filetype=ruby
 
 " Don't interpret numbers starting with 0 as octal
@@ -151,3 +151,6 @@ let g:ctrlp_user_command = ['.git/', 'cd %s && git ls-files']
 
 " set dictionary
 set dictionary +=~/.vim/dict
+
+" auto save on buffer switching
+set autowriteall
