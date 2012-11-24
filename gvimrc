@@ -154,3 +154,21 @@ set dictionary +=~/.vim/dict
 
 " auto save on buffer switching
 set autowriteall
+
+" map c-j to escapre
+inoremap <C-j> <Esc>
+" map c-s to save
+inoremap <C-s> <Esc>:w<cr>
+
+" map semicolon to enter
+" inoremap <C-;> <cr>
+" map shift enter in command mode to adding a new line
+map <S-Enter> O<Esc>
+map <CR> o<Esc>
+
+set updatetime=3000
+au CursorHold * :w
+au CursorHoldI * :w
+
+" rather drastic no swap file
+set noswapfile
