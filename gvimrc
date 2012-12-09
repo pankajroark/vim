@@ -167,8 +167,47 @@ map <S-Enter> O<Esc>
 map <CR> o<Esc>
 
 set updatetime=3000
-au CursorHold * :w
-au CursorHoldI * :w
+au CursorHold * call Save_if_writable()
+au CursorHoldI * call Save_if_writable()
+au BufLeave * call Save_if_writable()
+
+fun! Save_if_writable()
+  if(filewritable(bufname("%")))
+    :w
+  endif
+endf  
 
 " rather drastic no swap file
 set noswapfile
+
+nmap <C-w>1 :only<cr>
+
+" switch to last tab
+let g:lasttab = 1
+nmap <C-Tab> :exe "tabn ".g:lasttab<CR>
+au TabLeave * let g:lasttab = tabpagenr()
+
+noremap <D-1> :tabn 1<cr>
+noremap <D-2> :tabn 2<cr>
+noremap <D-3> :tabn 3<cr>
+noremap <D-4> :tabn 4<cr>
+noremap <D-5> :tabn 5<cr>
+noremap <D-6> :tabn 6<cr>
+noremap <D-7> :tabn 7<cr>
+noremap <D-8> :tabn 8<cr>
+
+imap ;pn println()<left>
+imap ;cl console.log("");<left><left><left>
+
+set winwidth=90
+nmap <Tab> :call Next_buffer_or_next_tab()<cr>
+
+fun! Next_buffer_or_next_tab()
+  let num_buffers = len(tabpagebuflist())
+  echo num_buffers
+  if (num_buffers <= 1) 
+    :tabnext
+  else
+    :exe "normal \<C-w>\<C-w>"
+  endif
+endf
