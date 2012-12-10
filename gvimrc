@@ -195,6 +195,7 @@ noremap <D-5> :tabn 5<cr>
 noremap <D-6> :tabn 6<cr>
 noremap <D-7> :tabn 7<cr>
 noremap <D-8> :tabn 8<cr>
+noremap <D-9> :tablast<cr>
 
 imap ;pn println()<left>
 imap ;cl console.log("");<left><left><left>
@@ -223,3 +224,18 @@ vnoremap <silent> # :<C-U>
   \gvy?<C-R><C-R>=substitute(
   \escape(@", '?\.*$^~['), '\_s\+', '\\_s\\+', 'g')<CR><CR>
   \gV:call setreg('"', old_reg, old_regtype)<CR>
+
+
+" Ctrlp mappings
+nmap <leader>b :CtrlPBuffer<CR>
+nmap <leader>m :CtrlPMRU<CR>
+nmap <leader>p :CtrlPMixed<CR>
+
+fun! GuiTabLabel()
+  let tabnumber = tabpagenr()
+  let tabname = fnamemodify(bufname(winbufnr(1)), ":t")
+  let bettertabname = (match(tabname, "NERD_tree") == -1) ? tabname : fnamemodify(bufname(winbufnr(2)), ":t")
+  return  join([ tabnumber, bettertabname ], ":")
+endf
+
+au BufEnter * set guitablabel=%{GuiTabLabel()}
