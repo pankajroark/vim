@@ -30,24 +30,24 @@ augroup END
 "autocmd vimenter * NERDTree
 
 " Map NerdTree
-nmap <F5> :NERDTreeToggle<CR>
-nmap <F6> :TagbarToggle<CR>
+nnoremap <F5> :NERDTreeToggle<CR>
+nnoremap <F6> :TagbarToggle<CR>
 
 " Remember leader n stands for nerdtree in general
-nmap <leader>nf :NERDTreeFind<CR>
+nnoremap <leader>nf :NERDTreeFind<CR>
 
-nmap <D-j> <C-w><C-w>
-nmap <D-k> <C-w>p
+noremap <D-j> <C-w><C-w>
+noremap <D-k> <C-w>p
 
 " Source the vimrc file after saving it
 if has("autocmd")
   autocmd bufwritepost .gvimrc source $MYGVIMRC
 endif
 
-nmap <leader>v :tabedit $MYGVIMRC<CR>
-nmap <leader>xt :tabedit $HOME/.todo<CR>
-nmap <leader>xy :tabedit $HOME/.today<CR>
-nmap <C-S-c> :s/^/#/<CR>j
+noremap <leader>v :tabedit $MYGVIMRC<CR>
+noremap <leader>xt :tabedit $HOME/.todo<CR>
+noremap <leader>xy :tabedit $HOME/.today<CR>
+noremap <C-S-c> :s/^/#/<CR>j
 
 map <D-up> :vertical resize +5<cr>
 map <C-down> :vertical resize -5<cr>
@@ -173,18 +173,20 @@ au BufLeave * call Save_if_writable()
 
 fun! Save_if_writable()
   if(filewritable(bufname("%")))
-    :w
+    if(&readonly == 0 && &mod)
+      :w
+    endif
   endif
 endf  
 
 " rather drastic no swap file
 set noswapfile
 
-nmap <C-w>1 :only<cr>
+noremap <C-w>1 :only<cr>
 
 " switch to last tab
 let g:lasttab = 1
-nmap <C-Tab> :exe "tabn ".g:lasttab<CR>
+noremap <C-Tab> :exe "tabn ".g:lasttab<CR>
 au TabLeave * let g:lasttab = tabpagenr()
 
 noremap <D-1> :tabn 1<cr>
@@ -201,7 +203,7 @@ imap ;pn println()<left>
 imap ;cl console.log("");<left><left><left>
 
 set winwidth=90
-nmap <Tab> :call Next_buffer_or_next_tab()<cr>
+noremap <Tab> :call Next_buffer_or_next_tab()<cr>
 
 fun! Next_buffer_or_next_tab()
   let num_buffers = len(tabpagebuflist())
@@ -227,9 +229,8 @@ vnoremap <silent> # :<C-U>
 
 
 " Ctrlp mappings
-nmap <leader>b :CtrlPBuffer<CR>
-nmap <leader>m :CtrlPMRU<CR>
-nmap <leader>p :CtrlPMixed<CR>
+noremap <leader>b :CtrlPBuffer<CR>
+noremap <leader>m :CtrlPMRU<CR>
 
 fun! GuiTabLabel()
   let tabnumber = tabpagenr()
@@ -239,3 +240,40 @@ fun! GuiTabLabel()
 endf
 
 au BufEnter * set guitablabel=%{GuiTabLabel()}
+
+" move line around
+nnoremap - ddp
+nnoremap _ ddkP
+
+" correct receive
+iabbrev recieve receive
+
+" quote a word
+nnoremap <leader>" viw<esc>a"<esc>hbi"<esc>lel
+nnoremap <leader>' viw<esc>a'<esc>hbi'<esc>lel
+vnoremap <leader>" <esc>a"<esc>`<i"<esc>`>
+
+" Another mapping for escape
+inoremap jk <esc>
+noremap ,p :execute "rightbelow vsplit ".bufname("#")<cr>
+
+nnoremap <leader>g :set operatorfunc=<SID>GrepOperator<cr>g@
+vnoremap <leader>g :<c-u>call <SID>GrepOperator(visualmode())<cr>
+nnoremap <space> :silent execute "Ack! " . shellescape(expand("<cword>"))<cr> 
+
+function! s:GrepOperator(type)
+    let saved_unnamed_register = @@
+
+    if a:type ==# 'v'
+        normal! `<v`>y
+    elseif a:type ==# 'char'
+        normal! `[v`]y
+    else
+        return
+    endif
+
+    let @/ = @@
+    silent execute "Ack! " . shellescape(@@) . " ."
+
+    let @@ = saved_unnamed_register
+endfunction
