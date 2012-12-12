@@ -67,3 +67,6 @@
 [submodule "bundle/dwm"]
 	path = bundle/dwm
 	url = git://github.com/spolu/dwm.vim.git
+[submodule "bundle/vim-json"]
+	path = bundle/vim-json
+	url = git://github.com/jakar/vim-json.git
