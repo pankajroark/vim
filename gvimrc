@@ -21,7 +21,7 @@ function! ResCur()
   endif
 endfunction
 
-augroup resCur
+augroup ResCur
   autocmd!
   autocmd BufWinEnter * call ResCur()
 augroup END
@@ -40,9 +40,10 @@ noremap <D-j> <C-w><C-w>
 noremap <D-k> <C-w>p
 
 " Source the vimrc file after saving it
-if has("autocmd")
+augroup VimrcLoad
+  autocmd!
   autocmd bufwritepost .gvimrc source $MYGVIMRC
-endif
+augroup END
 
 noremap <leader>v :tabedit $MYGVIMRC<CR>
 noremap <leader>xt :tabedit $HOME/.todo<CR>
@@ -74,7 +75,8 @@ let g:Powerline_symbols = 'fancy'
 set laststatus=2
 
 "pig
-augroup filetypedetect 
+augroup Filetypedetect 
+  autocmd!
   au BufNewFile,BufRead *.pig set filetype=pig syntax=pig 
 augroup END 
 
@@ -89,7 +91,10 @@ endif
 
 " Set a large font
 set guifont=Menlo\ Regular:h14
-au! BufRead,BufNewFile buildfile set filetype=ruby
+augroup ReadBuildFileAsRuby
+  autocmd!
+  au! BufRead,BufNewFile buildfile set filetype=ruby
+augroup END
 
 " Don't interpret numbers starting with 0 as octal
 set nrformats=
@@ -167,9 +172,12 @@ map <S-Enter> O<Esc>
 map <CR> o<Esc>
 
 set updatetime=3000
-au CursorHold * call Save_if_writable()
-au CursorHoldI * call Save_if_writable()
-au BufLeave * call Save_if_writable()
+augroup AutomaticSave
+  autocmd!
+  au CursorHold * call Save_if_writable()
+  au CursorHoldI * call Save_if_writable()
+  au BufLeave * call Save_if_writable()
+augroup END
 
 fun! Save_if_writable()
   if(filewritable(bufname("%")))
@@ -187,7 +195,10 @@ noremap <C-w>1 :only<cr>
 " switch to last tab
 let g:lasttab = 1
 noremap <C-Tab> :exe "tabn ".g:lasttab<CR>
-au TabLeave * let g:lasttab = tabpagenr()
+augroup RememberLastTab
+  autocmd!
+  au TabLeave * let g:lasttab = tabpagenr()
+augroup END
 
 noremap <D-1> :tabn 1<cr>
 noremap <D-2> :tabn 2<cr>
@@ -239,7 +250,11 @@ fun! GuiTabLabel()
   return  join([ tabnumber, bettertabname ], ":")
 endf
 
-au BufEnter * set guitablabel=%{GuiTabLabel()}
+augroup NumberTabs
+  autocmd!
+  au BufEnter * set guitablabel=%{GuiTabLabel()}
+augroup END
+
 
 " move line around
 nnoremap - ddp
