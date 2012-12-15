@@ -85,7 +85,7 @@ if has("gui_running")
 endif
 
 "CloseMiniBufExplorer by default
-map <F7> :TMiniBufExplorer<CR>
+"map <F7> :TMiniBufExplorer<CR>
 
 " Set a large font
 set guifont=Menlo\ Regular:h14
@@ -277,3 +277,10 @@ function! s:GrepOperator(type)
 
     let @@ = saved_unnamed_register
 endfunction
+
+nnoremap <F7> :call SaveAndMake()
+
+fun! SaveAndMake()
+  :wa
+  :make
+endfun
