@@ -48,6 +48,7 @@ augroup END
 noremap <leader>v :tabedit $MYGVIMRC<CR>
 noremap <leader>xt :tabedit $HOME/.todo<CR>
 noremap <leader>xy :tabedit $HOME/.today<CR>
+noremap <leader>k :tabedit $HOME/Dropbox/pankaj/funda<CR>
 noremap <C-S-c> :s/^/#/<CR>j
 
 map <D-up> :vertical resize +5<cr>
@@ -213,48 +214,6 @@ noremap <D-9> :tablast<cr>
 imap ;pn println()<left>
 imap ;cl console.log("");<left><left><left>
 
-set winwidth=90
-noremap <Tab> :call Next_buffer_or_next_tab()<cr>
-
-fun! Next_buffer_or_next_tab()
-  let num_buffers = len(tabpagebuflist())
-  echo num_buffers
-  if (num_buffers <= 1) 
-    :tabnext
-  else
-    :exe "normal \<C-w>\<C-w>"
-  endif
-endf
-
-" Search for selected text, forwards or backwards.
-vnoremap <silent> * :<C-U>
-  \let old_reg=getreg('"')<Bar>let old_regtype=getregtype('"')<CR>
-  \gvy/<C-R><C-R>=substitute(
-  \escape(@", '/\.*$^~['), '\_s\+', '\\_s\\+', 'g')<CR><CR>
-  \gV:call setreg('"', old_reg, old_regtype)<CR>
-vnoremap <silent> # :<C-U>
-  \let old_reg=getreg('"')<Bar>let old_regtype=getregtype('"')<CR>
-  \gvy?<C-R><C-R>=substitute(
-  \escape(@", '?\.*$^~['), '\_s\+', '\\_s\\+', 'g')<CR><CR>
-  \gV:call setreg('"', old_reg, old_regtype)<CR>
-
-
-" Ctrlp mappings
-noremap <leader>b :CtrlPBuffer<CR>
-noremap <leader>m :CtrlPMRU<CR>
-
-fun! GuiTabLabel()
-  let tabnumber = tabpagenr()
-  let tabname = fnamemodify(bufname(winbufnr(1)), ":t")
-  let bettertabname = (match(tabname, "NERD_tree") == -1) ? tabname : fnamemodify(bufname(winbufnr(2)), ":t")
-  return  join([ tabnumber, bettertabname ], ":")
-endf
-
-augroup NumberTabs
-  autocmd!
-  au BufEnter * set guitablabel=%{GuiTabLabel()}
-augroup END
-
 
 " move line around
 nnoremap - ddp
@@ -269,7 +228,6 @@ nnoremap <leader>' viw<esc>a'<esc>hbi'<esc>lel
 vnoremap <leader>" <esc>a"<esc>`<i"<esc>`>
 
 " Another mapping for escape
-inoremap jk <esc>
 noremap ,p :execute "rightbelow vsplit ".bufname("#")<cr>
 
 nnoremap <leader>g :set operatorfunc=<SID>GrepOperator<cr>g@
@@ -299,3 +257,17 @@ fun! SaveAndMake()
   :wa
   :make
 endfun
+
+nnoremap <leader>q :call QuickfixToggle()<cr>
+
+let g:quickfix_is_open = 0
+
+function! QuickfixToggle()
+    if g:quickfix_is_open
+        cclose
+        let g:quickfix_is_open = 0
+    else
+        copen
+        let g:quickfix_is_open = 1
+    endif
+endfunction
