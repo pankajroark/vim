@@ -43,9 +43,10 @@ noremap <D-k> <C-w>p
 augroup VimrcLoad
   autocmd!
   autocmd bufwritepost .gvimrc source $MYGVIMRC
+  autocmd bufwritepost .vimrc source $MYVIMRC
 augroup END
 
-noremap <leader>v :tabedit $MYGVIMRC<CR>
+noremap <leader>v :tabedit $MYVIMRC<CR>
 noremap <leader>xt :tabedit $HOME/.todo<CR>
 noremap <leader>xy :tabedit $HOME/.today<CR>
 noremap <leader>k :tabedit $HOME/Dropbox/pankaj/funda<CR>
@@ -54,8 +55,8 @@ noremap <C-S-c> :s/^/#/<CR>j
 map <D-up> :vertical resize +5<cr>
 map <C-down> :vertical resize -5<cr>
 
-set background=dark
-colorscheme solarized
+" set background=dark
+" colorscheme inkpot
 
 map <D-e> <C-e>
 
@@ -101,7 +102,7 @@ augroup END
 set nrformats=
 
 " Command - T helpers
-function! Git_Repo_Cdup() " Get the relative path to repo root
+function! Git_Root() " Get the relative path to repo root
     "Ask git for the root of the git repo (as a relative '../../' path)
     let git_top = system('git rev-parse --show-cdup')
     let git_fail = 'fatal: Not a git repository'
@@ -111,12 +112,13 @@ function! Git_Repo_Cdup() " Get the relative path to repo root
     else
         " Return the cdup path to the root. If already in root,
         " path will be empty, so add './'
-        return './' . git_top
+        " Also remove newline at the end
+        return './' . strpart(git_top, 0, strlen(git_top) - 1)
     endif
 endfunction
 
 function! CD_Git_Root()
-    execute 'cd '.Git_Repo_Cdup()
+    execute 'cd '.Git_Root()
     let curdir = getcwd()
     echo 'CWD now set to: '.curdir
 endfunction
@@ -172,35 +174,6 @@ inoremap <C-s> <Esc>:w<cr>
 map <S-Enter> O<Esc>
 map <CR> o<Esc>
 
-set updatetime=3000
-augroup AutomaticSave
-  autocmd!
-  au CursorHold * call Save_if_writable()
-  au CursorHoldI * call Save_if_writable()
-  au BufLeave * call Save_if_writable()
-augroup END
-
-fun! Save_if_writable()
-  if(filewritable(bufname("%")))
-    if(&readonly == 0 && &mod)
-      :w
-    endif
-  endif
-endf  
-
-" rather drastic no swap file
-set noswapfile
-
-noremap <C-w>1 :only<cr>
-
-" switch to last tab
-let g:lasttab = 1
-noremap <C-Tab> :exe "tabn ".g:lasttab<CR>
-augroup RememberLastTab
-  autocmd!
-  au TabLeave * let g:lasttab = tabpagenr()
-augroup END
-
 noremap <D-1> :tabn 1<cr>
 noremap <D-2> :tabn 2<cr>
 noremap <D-3> :tabn 3<cr>
@@ -210,9 +183,6 @@ noremap <D-6> :tabn 6<cr>
 noremap <D-7> :tabn 7<cr>
 noremap <D-8> :tabn 8<cr>
 noremap <D-9> :tablast<cr>
-
-imap ;pn println()<left>
-imap ;cl console.log("");<left><left><left>
 
 
 " move line around
@@ -232,7 +202,6 @@ noremap ,p :execute "rightbelow vsplit ".bufname("#")<cr>
 
 nnoremap <leader>g :set operatorfunc=<SID>GrepOperator<cr>g@
 vnoremap <leader>g :<c-u>call <SID>GrepOperator(visualmode())<cr>
-nnoremap <space> :silent execute "Ack! " . shellescape(expand("<cword>"))<cr> 
 
 function! s:GrepOperator(type)
     let saved_unnamed_register = @@
@@ -271,3 +240,15 @@ function! QuickfixToggle()
         let g:quickfix_is_open = 1
     endif
 endfunction
+
+fun! OpenReadme()
+  execute 'tabedit '.Git_Root().'/README'
+endfun
+
+nnoremap <leader>r :call OpenReadme()<cr>
+nnoremap <silent> <C-space> :YRShow<CR>
+
+" disable toolbar, don't need it
+if has("gui_running")
+    set guioptions=egmrt
+endif

@@ -17,6 +17,7 @@ set expandtab            " insert space characters whenever the tab key is press
 set scrolloff=5
 set tags=./tags;/
 set cursorline
+set relativenumber
 
 set viminfo='10,\"100,:20,%,n~/.viminfo
 function! ResCur()
@@ -46,17 +47,18 @@ nmap <D-k> <C-w>p
 
 " Source the vimrc file after saving it
 if has("autocmd")
-  autocmd bufwritepost .gvimrc source $MYGVIMRC
+  autocmd bufwritepost .vimrc source $MYVIMRC
 endif
 
-nmap <leader>v :tabedit $MYGVIMRC<CR>
+nmap <leader>v :tabedit $MYVIMRC<CR>
 nmap <C-S-c> :s/^/#/<CR>j
 
 map <D-up> :vertical resize +5<cr>
 map <C-down> :vertical resize -5<cr>
 
 set background=light
-colorscheme solarized
+"colorscheme inkpot
+colorscheme pyte
 
 map <D-e> <C-e>
 
@@ -83,9 +85,6 @@ augroup END
 
 " matchit
 runtime macros/matchit.vim
-
-" Another mapping for escape
-inoremap jk <esc>
 
 " Search for selected text, forwards or backwards.
 vnoremap <silent> * :<C-U>
@@ -129,3 +128,51 @@ fun! Next_buffer_or_next_tab()
   endif
 endf
 
+nnoremap <leader>j :%! python -mjson.tool<cr>
+
+set updatetime=3000
+augroup AutomaticSave
+  autocmd!
+  au CursorHold * call Save_if_writable()
+  au CursorHoldI * call Save_if_writable()
+  au BufLeave * call Save_if_writable()
+augroup END
+
+fun! Save_if_writable()
+  if(filewritable(bufname("%")))
+    if(&readonly == 0 && &mod)
+      :w
+    endif
+  endif
+endf  
+
+" rather drastic no swap file
+set noswapfile
+
+noremap <C-w>1 :only<cr>
+
+" switch to last tab
+let g:lasttab = 1
+noremap <C-Tab> :exe "tabn ".g:lasttab<CR>
+augroup RememberLastTab
+  autocmd!
+  au TabLeave * let g:lasttab = tabpagenr()
+augroup END
+
+" Another mapping for escape
+inoremap jk <esc>
+
+imap ;pn println()<left>
+imap ;cl console.log("");<left><left><left>
+imap ;sn System.out.println();<left><left>
+
+" nnoremap <space> :silent execute "Ack! " . shellescape(expand("<cword>"))<cr> 
+nnoremap <space> :w<cr>
+
+nnoremap gp `[v`]
+
+" Automatically close open brace
+inoremap {      {}<Left>
+inoremap {<CR>  {<CR>}<Esc>O
+inoremap {{     {
+inoremap {}     {}
