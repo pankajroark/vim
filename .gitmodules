@@ -91,3 +91,6 @@
 [submodule "bundle/vim-bufsurf"]
 	path = bundle/vim-bufsurf
 	url = https://github.com/ton/vim-bufsurf.git
+[submodule "bundle/sbt-vim"]
+	path = bundle/sbt-vim
+	url = git://github.com/ktvoelker/sbt-vim.git
