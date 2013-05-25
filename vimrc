@@ -27,6 +27,7 @@ function! ResCur()
   endif
 endfunction
 
+" Restore cursor"
 augroup resCur
   autocmd!
   autocmd BufWinEnter * call ResCur()
@@ -46,9 +47,12 @@ nmap <D-j> <C-w><C-w>
 nmap <D-k> <C-w>p
 
 " Source the vimrc file after saving it
+augroup VimrcReload
+  autocmd!
 if has("autocmd")
   autocmd bufwritepost .vimrc source $MYVIMRC
 endif
+augroup end
 
 nmap <leader>v :tabedit $MYVIMRC<CR>
 nmap <C-S-c> :s/^/#/<CR>j
@@ -70,7 +74,7 @@ let g:ruby_debugger_progname = 'mvim'
 
 "neocomplcache
 let g:neocomplcache_enable_at_startup = 1
-let g:ackprg="ack -H --nocolor --nogroup --column"
+let g:ackprg="ack -i -H --nocolor --nogroup --column"
 " minibufexplorer
 let g:miniBufExplMapCTabSwitchBufs = 1
 
@@ -114,6 +118,12 @@ augroup NumberTabs
   autocmd!
   au BufEnter * set guitablabel=%{GuiTabLabel()}
 augroup END
+
+augroup NerdSync
+  autocmd!
+  ""au BufEnter * if (exists("b:NERDTreeType")) :normal NERDTreeFind endif
+  autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
+augroup end
 
 set winwidth=90
 noremap <Tab> :call Next_buffer_or_next_tab()<cr>
@@ -172,7 +182,85 @@ nnoremap <space> :w<cr>
 nnoremap gp `[v`]
 
 " Automatically close open brace
-inoremap {      {}<Left>
-inoremap {<CR>  {<CR>}<Esc>O
-inoremap {{     {
-inoremap {}     {}
+function! ConditionalPairMap(open, close, nextLine)
+  let line = getline('.')
+  let col = col('.')
+  if col < col('$') || stridx(line, a:close, col + 1) != -1
+    return a:open
+  else
+    if(a:nextLine == 0)
+      return a:open . a:close . repeat("\<left>", len(a:close))
+    else
+      return a:open . "\<cr>" . a:close . repeat("\<Esc>O", 1)
+    endif
+  endif
+endf
+inoremap <expr> ( ConditionalPairMap('(', ')', 0)
+inoremap <expr> { ConditionalPairMap('{', '}', 0)
+inoremap <expr> [ ConditionalPairMap('[', ']', 0)
+inoremap <expr> (<cr> ConditionalPairMap('(', ')', 1)
+inoremap <expr> {<cr> ConditionalPairMap('{', '}', 1)
+inoremap <expr> [<cr> ConditionalPairMap('[', ']', 1)
+
+inoremap " ""<Left>
+
+noremap <D-[> :BufSurfBack<cr>
+noremap <D-]> :BufSurfForward<cr>
+
+" git vim sessions stuff
+let s:sessions_dir = "~/.vim/sessions/"
+
+function! GetCurrentGitBranch()
+    return system("git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* //'")
+endfunction
+
+function! GetWorkingDirectory()
+    redir => current_dir
+    silent pwd
+    redir END
+    return current_dir
+endfunction
+
+function! GetSessionFile()
+    let branch = GetCurrentGitBranch()
+    if branch == ""
+        echo "No git repository at " . GetWorkingDirectory()
+    else
+        return s:sessions_dir . GetCurrentGitBranch()
+    endif
+    return ""
+endfunction
+
+function! GitSessionSave()
+    let session_file = GetSessionFile()
+    if session_file != ""
+        execute "mksession! " . session_file
+        echo "Saved session to " . session_file
+    endif
+endfunction
+
+function! GitSessionRestore()
+    let session_file = GetSessionFile()
+    if session_file != ""
+        execute "tabo"
+        execute "source " . session_file
+        echo "Restored session " . session_file
+    endif
+endfunction
+
+command! Gss call GitSessionSave()
+command! Gsr call GitSessionRestore()
+
+augroup MySessions
+  autocmd!
+  au VimLeave * call GitSessionSave()
+augroup end
+"au VimEnter * call GitSessionRestore()
+
+" Pull word under cursor into LHS of a substitute
+:nmap <leader>z :%s#\<<c-r>=expand("<cword>")<cr>\>#
+" Pull Visually Highlighted text into LHS of a substitute
+:vmap <leader>z :<C-U>%s/\<<c-r>*\>/
+
+" Make Y behave like C and D"
+nmap Y y$

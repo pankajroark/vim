@@ -246,6 +246,7 @@ fun! OpenReadme()
 endfun
 
 nnoremap <leader>r :call OpenReadme()<cr>
+"Yankring
 nnoremap <silent> <C-space> :YRShow<CR>
 
 " disable toolbar, don't need it
