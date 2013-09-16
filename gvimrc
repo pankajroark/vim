@@ -7,7 +7,6 @@ set autoindent
 set tabstop=2            " number of spaces to indent when tab-key is pressed
 set shiftwidth=2         " number of space characters inserted for indentation
 set expandtab            " insert space characters whenever the tab key is pressed
-set nu
 
 set scrolloff=5
 set tags=./tags;/
@@ -68,7 +67,9 @@ let g:ruby_debugger_progname = 'mvim'
 
 "neocomplcache
 let g:neocomplcache_enable_at_startup = 1
-let g:ackprg="ack -H --nocolor --nogroup --column"
+""let g:ackprg="ack -H --nocolor --nogroup --column"
+" Use ag instead of ack for searching
+let g:ackprg = 'ag --nogroup --nocolor --column'
 " minibufexplorer
 let g:miniBufExplMapCTabSwitchBufs = 1
 

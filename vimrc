@@ -62,7 +62,8 @@ map <C-down> :vertical resize -5<cr>
 
 set background=light
 "colorscheme inkpot
-colorscheme pyte
+" colorscheme pyte
+colorscheme molokai
 
 map <D-e> <C-e>
 
@@ -75,6 +76,7 @@ let g:ruby_debugger_progname = 'mvim'
 "neocomplcache
 let g:neocomplcache_enable_at_startup = 1
 let g:ackprg="ack -i -H --nocolor --nogroup --column"
+let g:neocomplcache_disable_auto_complete=1
 " minibufexplorer
 let g:miniBufExplMapCTabSwitchBufs = 1
 
@@ -195,14 +197,14 @@ function! ConditionalPairMap(open, close, nextLine)
     endif
   endif
 endf
-inoremap <expr> ( ConditionalPairMap('(', ')', 0)
+"inoremap <expr> ( ConditionalPairMap('(', ')', 0)
 inoremap <expr> { ConditionalPairMap('{', '}', 0)
-inoremap <expr> [ ConditionalPairMap('[', ']', 0)
-inoremap <expr> (<cr> ConditionalPairMap('(', ')', 1)
-inoremap <expr> {<cr> ConditionalPairMap('{', '}', 1)
-inoremap <expr> [<cr> ConditionalPairMap('[', ']', 1)
+"inoremap <expr> [ ConditionalPairMap('[', ']', 0)
+"inoremap <expr> (<cr> ConditionalPairMap('(', ')', 1)
+"inoremap <expr> {<cr> ConditionalPairMap('{', '}', 1)
+"inoremap <expr> [<cr> ConditionalPairMap('[', ']', 1)
 
-inoremap " ""<Left>
+"inoremap " ""<Left>
 
 noremap <D-[> :BufSurfBack<cr>
 noremap <D-]> :BufSurfForward<cr>
