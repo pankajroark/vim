@@ -18,6 +18,7 @@ set scrolloff=5
 set tags=./tags;/
 set cursorline
 set relativenumber
+set nf=octal,hex,alpha
 
 set viminfo='10,\"100,:20,%,n~/.viminfo
 function! ResCur()

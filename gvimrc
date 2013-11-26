@@ -254,3 +254,5 @@ nnoremap <silent> <C-space> :YRShow<CR>
 if has("gui_running")
     set guioptions=egmrt
 endif
+
+set transparency=2
