@@ -70,9 +70,6 @@
 [submodule "bundle/vim-json"]
 	path = bundle/vim-json
 	url = git://github.com/jakar/vim-json.git
-[submodule "bundle/YankRing"]
-	path = bundle/YankRing
-	url = git://github.com/vim-scripts/YankRing.vim.git
 [submodule "bundle/inkpot"]
 	path = bundle/inkpot
 	url = git://github.com/ciaranm/inkpot.git

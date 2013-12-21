@@ -256,3 +256,4 @@ if has("gui_running")
 endif
 
 set transparency=2
+autocmd BufWritePre *.scala :%s/\s+$//e
