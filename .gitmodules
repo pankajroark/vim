@@ -100,3 +100,6 @@
 [submodule "bundle/thrift"]
 	path = bundle/thrift
 	url = https://github.com/sprsquish/thrift.vim.git
+[submodule "bundle/vim-surround"]
+	path = bundle/vim-surround
+	url = https://github.com/tpope/vim-surround.git
