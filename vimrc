@@ -301,3 +301,6 @@ endfunction
 
 " Make system key board the default
 set clipboard=unnamed
+
+" Mapping for Yank Ring
+nnoremap <silent> <F7> :YRShow<CR>
