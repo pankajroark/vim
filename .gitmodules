@@ -100,3 +100,6 @@
 [submodule "bundle/vim-surround"]
 	path = bundle/vim-surround
 	url = https://github.com/tpope/vim-surround.git
+[submodule "bundle/YankRing"]
+	path = bundle/YankRing
+	url = git@github.com:pankajroark/YankRing.vim.git
