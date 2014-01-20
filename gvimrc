@@ -164,11 +164,6 @@ set dictionary +=~/.vim/dict
 " auto save on buffer switching
 set autowriteall
 
-" map c-j to escapre
-inoremap <C-j> <Esc>
-" map c-s to save
-inoremap <C-s> <Esc>:w<cr>
-
 " map semicolon to enter
 " inoremap <C-;> <cr>
 " map shift enter in command mode to adding a new line

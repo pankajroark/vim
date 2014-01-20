@@ -1,5 +1,42 @@
 call pathogen#infect()
 
+set nocompatible              " be iMproved
+filetype off                  " required!
+
+set rtp+=~/.vim/bundle/vundle/
+call vundle#rc()
+
+Bundle 'scrooloose/nerdtree.git'
+Bundle 'fholgado/minibufexpl.vim.git'
+Bundle 'mileszs/ack.vim.git'
+Bundle 'Shougo/neocomplcache.git'
+Bundle 'ervandew/supertab.git'
+Bundle 'majutsushi/tagbar.git'
+Bundle 'tpope/vim-endwise'
+Bundle 'tpope/vim-fugitive.git'
+Bundle 'Lokaltog/vim-powerline.git'
+Bundle 'vim-ruby/vim-ruby.git'
+Bundle 'tpope/vim-unimpaired.git'
+Bundle 'altercation/vim-colors-solarized.git'
+Bundle 'nelstrom/vim-textobj-rubyblock.git'
+Bundle 'kana/vim-textobj-user.git'
+Bundle 'edsono/vim-matchit.git'
+Bundle 'bkad/CamelCaseMotion.git'
+Bundle 'kien/ctrlp.vim.git'
+Bundle 'altercation/vim-colors-solarized.git'
+Bundle 'derekwyatt/vim-scala.git'
+Bundle 'scrooloose/nerdcommenter.git'
+Bundle 'jakar/vim-json.git'
+Bundle 'ciaranm/inkpot.git'
+Bundle 'flazz/vim-colorschemes.git'
+Bundle 'rodjek/vim-puppet.git'
+Bundle 'uarun/vim-protobuf.git'
+Bundle 'ton/vim-bufsurf.git'
+Bundle 'ktvoelker/sbt-vim.git'
+Bundle 'jigish/vim-thrift.git'
+Bundle 'sprsquish/thrift.vim.git'
+Bundle 'tpope/vim-surround.git'
+Bundle 'maxbrunsfeld/vim-yankstack'
 
 set tabstop=2            " number of spaces to indent when tab-key is pressed
 set shiftwidth=2         " number of space characters inserted for indentation
@@ -304,3 +341,9 @@ set clipboard=unnamed
 
 " Mapping for Yank Ring
 nnoremap <silent> <F7> :YRShow<CR>
+
+" map c-j to escapre
+inoremap <C-j> <Esc>
+" map c-s to save
+inoremap <C-s> <Esc>:w<cr>
+
