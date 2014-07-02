@@ -6,25 +6,24 @@ filetype off                  " required!
 set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
 
+Bundle 'gmarik/vundle'
 Bundle 'scrooloose/nerdtree.git'
-Bundle 'fholgado/minibufexpl.vim.git'
 Bundle 'mileszs/ack.vim.git'
 Bundle 'Shougo/neocomplcache.git'
 Bundle 'ervandew/supertab.git'
 Bundle 'majutsushi/tagbar.git'
 Bundle 'tpope/vim-endwise'
 Bundle 'tpope/vim-fugitive.git'
-Bundle 'Lokaltog/vim-powerline.git'
 Bundle 'vim-ruby/vim-ruby.git'
 Bundle 'tpope/vim-unimpaired.git'
-Bundle 'altercation/vim-colors-solarized.git'
+"Bundle 'altercation/vim-colors-solarized.git'
 Bundle 'nelstrom/vim-textobj-rubyblock.git'
 Bundle 'kana/vim-textobj-user.git'
 Bundle 'edsono/vim-matchit.git'
 Bundle 'bkad/CamelCaseMotion.git'
 Bundle 'kien/ctrlp.vim.git'
 Bundle 'altercation/vim-colors-solarized.git'
-Bundle 'derekwyatt/vim-scala.git'
+Bundle 'pankajroark/vim-scala.git'
 Bundle 'scrooloose/nerdcommenter.git'
 Bundle 'jakar/vim-json.git'
 Bundle 'ciaranm/inkpot.git'
@@ -37,6 +36,22 @@ Bundle 'jigish/vim-thrift.git'
 Bundle 'sprsquish/thrift.vim.git'
 Bundle 'tpope/vim-surround.git'
 Bundle 'maxbrunsfeld/vim-yankstack'
+Bundle 'bling/vim-airline'
+Bundle 'sickill/vim-pasta'
+Bundle 'skwp/greplace.vim'
+Bundle 'vim-scripts/genutils'
+Bundle 'pankajroark/vim-scala-jump'
+Bundle 'Lokaltog/vim-easymotion'
+Bundle 'Shougo/unite.vim'
+Bundle 'msanders/cocoa.vim'
+Bundle 'kien/rainbow_parentheses.vim'
+Bundle 'tpope/timl.git'
+Bundle 'AndrewRadev/sideways.vim'
+Bundle 'Shougo/vimproc.vim'
+" Needs building https://github.com/JazzCore/ctrlp-cmatcher
+Bundle 'JazzCore/ctrlp-cmatcher'
+Bundle 'mikewest/vimroom'
+Bundle 'wting/rust.vim'
 
 set tabstop=2            " number of spaces to indent when tab-key is pressed
 set shiftwidth=2         " number of space characters inserted for indentation
@@ -81,7 +96,8 @@ nmap <F6> :TagbarToggle<CR>
 " Remember leader n stands for nerdtree in general
 nmap <leader>nf :NERDTreeFind<CR>
 
-nmap <D-j> <C-w><C-w>
+" This has been assigned to jump to definition
+"nmap <D-j> <C-w><C-w>
 nmap <D-k> <C-w>p
 
 " Source the vimrc file after saving it
@@ -95,13 +111,12 @@ augroup end
 nmap <leader>v :tabedit $MYVIMRC<CR>
 nmap <C-S-c> :s/^/#/<CR>j
 
-map <D-up> :vertical resize +5<cr>
-map <C-down> :vertical resize -5<cr>
 
-set background=light
+set background=dark
 "colorscheme inkpot
 " colorscheme pyte
-colorscheme molokai
+" colorscheme molokai
+colorscheme solarized
 
 map <D-e> <C-e>
 
@@ -126,6 +141,7 @@ set laststatus=2
 augroup filetypedetect 
   au BufNewFile,BufRead *.pig set filetype=pig syntax=pig 
   au BufNewFile,BufRead *.aurora set filetype=python syntax=python 
+  au BufNewFile,BufRead *.gradle set filetype=groovy
 augroup END 
 
 "thrift
@@ -148,10 +164,6 @@ vnoremap <silent> # :<C-U>
   \escape(@", '?\.*$^~['), '\_s\+', '\\_s\\+', 'g')<CR><CR>
   \gV:call setreg('"', old_reg, old_regtype)<CR>
 
-
-" Ctrlp mappings
-noremap <leader>b :CtrlPBuffer<CR>
-noremap <leader>m :CtrlPMRU<CR>
 
 fun! GuiTabLabel()
   let tabnumber = tabpagenr()
@@ -340,10 +352,97 @@ endfunction
 set clipboard=unnamed
 
 " Mapping for Yank Ring
-nnoremap <silent> <F7> :YRShow<CR>
+"nnoremap <silent> <F7> :YRShow<CR>
 
 " map c-j to escapre
 inoremap <C-j> <Esc>
 " map c-s to save
 inoremap <C-s> <Esc>:w<cr>
 
+map <A-]> :vsp <CR>:exec("tag ".expand("<cword>"))<CR>
+
+" For a rainy that I want to jump forward
+" nnoremap g. <C-i>
+
+" [Trick] To copy-paste line 10 lines above current line -> ':-10t.'
+" [Trick] For below -> ':+10t.'
+
+" [Override] Use gp to select previously paste text, overrides paste + go to end
+nmap gp `[v`]
+
+" Make the current window more obvious
+augroup BgHighlight
+  autocmd!
+  autocmd WinEnter * set colorcolumn=81
+  autocmd WinLeave * set colorcolumn=0
+augroup END
+
+" Unite.vim customizations
+let g:unite_data_directory='~/.vim/.cache/unite'
+let g:unite_source_rec_max_cache_files = 200000
+call unite#custom#source('file_rec/async', 'max_candidates', 20)
+noremap <leader>b :<C-u>Unite buffer<CR>
+let g:unite_source_history_yank_enable = 1
+nnoremap <leader>y :<C-u>Unite history/yank<CR>
+
+if executable('ag')
+  let g:unite_source_rec_async_command= 'ag --nocolor --nogroup -g "scala"'
+  let g:unite_source_grep_command = 'ag'
+  let g:unite_source_grep_default_opts =
+  \ '--line-numbers --nocolor --nogroup --hidden --ignore ' .
+  \  '''.hg'' --ignore ''.svn'' --ignore ''.git'' --ignore ''.bzr''' .
+  \ '--ignore ''.pants.d'''
+  let g:unite_source_grep_recursive_opt = ''
+  " Unite.vim fuzzy finder
+  call unite#filters#matcher_default#use(['matcher_fuzzy'])
+  nnoremap <leader>f :<C-u>Unite -start-insert file_rec<CR>
+endif
+
+
+" Disable gui cursor blinking
+set guicursor+=a:blinkon0
+
+augroup rainbow
+  autocmd!
+  au BufWinEnter * RainbowParenthesesActivate
+  au Syntax * RainbowParenthesesLoadRound
+  au Syntax * RainbowParenthesesLoadSquare
+  au Syntax * RainbowParenthesesLoadBraces
+augroup END
+
+" Sideways mapping (swap function params)
+nnoremap <leader><right> :SidewaysRight<cr>
+nnoremap <leader><left>  :SidewaysLeft<cr>
+
+" Let ctrlp ignore gitignore files
+let g:ctrlp_working_path_mode = 2
+let g:ctrlp_max_files = 0
+let g:ctrlp_max_depth = 40
+let g:ctrlp_by_filename = 1
+let g:ctrlp_mruf_max = 1000
+set wildignore+=*.so,*.class,*.o,*.jar,*.swp,*.zip
+" Jump to only scala or java files
+" let g:ctrlp_user_command = ['.git/', 'cd %s && git ls-files | grep "\(scala\|java\)"']
+let g:ctrlp_match_window = 'bottom,order:btt,min:1,max:10,results:10'
+let g:ctrlp_match_func = {'match' : 'matcher#cmatch' }
+
+" Ctrlp mappings
+noremap <leader>m :CtrlPMRU<CR>
+noremap <leader>a :CtrlPMixed<CR>
+
+" command mode mappings
+cnoremap <C-a> <Home>
+cnoremap <C-e> <End>
+cnoremap <C-p> <Up>
+cnoremap <C-n> <Down>
+cnoremap <C-b> <S-Left>
+cnoremap <C-f> <S-Right>
+cnoremap <M-b> <S-Left>
+cnoremap <M-f> <S-Right>
+
+" preview dot file
+nnoremap <leader>p :silent ! dot -Tpng % > /tmp/test.png; open /tmp/test.png <CR>
+
+" Moving to lines with same indentation
+nnoremap <M-,> :call search('^'. matchstr(getline('.'), '\(^\s*\)') .'\%<' . line('.') . 'l\S', 'be')<CR>
+nnoremap <M-.> :call search('^'. matchstr(getline('.'), '\(^\s*\)') .'\%>' . line('.') . 'l\S', 'e')<CR>

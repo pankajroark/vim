@@ -35,8 +35,11 @@ nnoremap <F6> :TagbarToggle<CR>
 " Remember leader n stands for nerdtree in general
 nnoremap <leader>nf :NERDTreeFind<CR>
 
-noremap <D-j> <C-w><C-w>
-noremap <D-k> <C-w>p
+" This has been remapped to jump to definition
+"noremap <D-j> <C-w><C-w>
+noremap <D-j> :BetterScalaJump<CR>
+" This has been remapped for easy motion
+"noremap <D-k> <C-w>p
 
 " Source the vimrc file after saving it
 augroup VimrcLoad
@@ -46,13 +49,17 @@ augroup VimrcLoad
 augroup END
 
 noremap <leader>v :tabedit $MYVIMRC<CR>
-noremap <leader>xt :tabedit $HOME/.todo<CR>
-noremap <leader>xy :tabedit $HOME/.today<CR>
+noremap <leader>xt :tabedit ~/Dropbox/pankaj/docs/techie/lists/todo<CR>
+noremap <leader>xy :tabedit ~/Dropbox/pankaj/docs/techie/lists/scratch<CR>
 noremap <leader>k :tabedit $HOME/Dropbox/pankaj/funda<CR>
 noremap <C-S-c> :s/^/#/<CR>j
 
-map <D-up> :vertical resize +5<cr>
-map <C-down> :vertical resize -5<cr>
+set macmeta
+
+map <M-up> :vertical resize +5<cr>
+map <C-l> :vertical resize +5<cr>
+map <M-down> :vertical resize -5<cr>
+map <C-h> :vertical resize -5<cr>
 
 " set background=dark
 " colorscheme inkpot
@@ -93,7 +100,7 @@ endif
 "map <F7> :TMiniBufExplorer<CR>
 
 " Set a large font
-set guifont=Menlo\ Regular:h14
+set guifont=Menlo\ Regular:h17
 augroup ReadBuildFileAsRuby
   autocmd!
   au! BufRead,BufNewFile buildfile set filetype=ruby
@@ -153,11 +160,6 @@ nnoremap <LEADER>cwi :set wildignore=''<cr>:echo 'Wildignore cleared'<cr>
 " Mapping for current file path on ex
 cnoremap <expr> %% getcmdtype() == ':' ? expand('%:h').'/' : '%%'
 
-" Let ctrlp ignore gitignore files
-let g:ctrlp_working_path_mode = 2
-set wildignore+=*.so,*.class,*.o,*.jar,*.swp,*.zip
-let g:ctrlp_user_command = ['.git/', 'cd %s && git ls-files']
-
 " set dictionary
 set dictionary +=~/.vim/dict
 
@@ -170,6 +172,7 @@ set autowriteall
 map <S-Enter> O<Esc>
 map <CR> o<Esc>
 
+" note that command 0 is still available for future
 noremap <D-1> :tabn 1<cr>
 noremap <D-2> :tabn 2<cr>
 noremap <D-3> :tabn 3<cr>
@@ -216,7 +219,7 @@ function! s:GrepOperator(type)
     let @@ = saved_unnamed_register
 endfunction
 
-nnoremap <F7> :call SaveAndMake()
+"nnoremap <F7> :call SaveAndMake()
 
 fun! SaveAndMake()
   :wa
@@ -252,3 +255,39 @@ endif
 
 set transparency=2
 autocmd BufWritePre *.scala :%s/\s+$//e
+set macmeta
+
+function! CGitPathToClipBoard()
+  let a:cur_path = expand('%:p')
+  let a:parts = split(a:cur_path, "workspace")
+  let a:rel_path = a:parts[1]
+  let a:rel_path_parts = split(a:rel_path, '/')
+  let a:repo = a:rel_path_parts[0]
+  let a:path = join(a:rel_path_parts[1:], '/')
+  let a:cg_path = "https://cgit.twitter.biz/".a:repo."/tree/".a:path."#n".line('.')
+  let @* = a:cg_path
+  echo a:cg_path
+endfunction
+
+nnoremap <F7> :call CGitPathToClipBoard()<cr>
+
+" Easy motion  + colors
+map <C-j> <Plug>(easymotion-W)
+map <C-k> <Plug>(easymotion-B)
+
+hi link EasyMotionTarget ErrorMsg
+hi link EasyMotionShade  Comment
+
+hi link EasyMotionTarget2First ErrorMsg
+hi link EasyMotionTarget2Second Function
+hi Search guibg=peru guifg=wheat
+
+" modify selected text using combining diacritics
+command! StrikeThrough   call s:StrikeT()
+
+function! s:StrikeT()
+  execute 's/\v(.)/\1-/g'
+  execute 's/-$//'
+endfunction
+
+nnoremap <leader>s :StrikeThrough<CR>
