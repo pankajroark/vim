@@ -52,6 +52,7 @@ Bundle 'Shougo/vimproc.vim'
 Bundle 'JazzCore/ctrlp-cmatcher'
 Bundle 'mikewest/vimroom'
 Bundle 'wting/rust.vim'
+Bundle 'oplatek/Conque-Shell'
 
 set tabstop=2            " number of spaces to indent when tab-key is pressed
 set shiftwidth=2         " number of space characters inserted for indentation
@@ -137,16 +138,14 @@ let g:miniBufExplMapCTabSwitchBufs = 1
 let g:Powerline_symbols = 'fancy'
 set laststatus=2
 
-"pig
-augroup filetypedetect 
+" file type detections
+augroup Filetypedetect 
+  autocmd!
   au BufNewFile,BufRead *.pig set filetype=pig syntax=pig 
   au BufNewFile,BufRead *.aurora set filetype=python syntax=python 
   au BufNewFile,BufRead *.gradle set filetype=groovy
-augroup END 
-
-"thrift
-augroup filetypedetect 
   au BufNewFile,BufRead *.thrift set filetype=thrift syntax=thrift 
+  au BufNewFile,BufRead buildfile set filetype=ruby
 augroup END 
 
 " matchit
@@ -322,7 +321,11 @@ augroup end
 
 " Make Y behave like C and D"
 nmap Y y$
-autocmd BufWritePre *.scala :%s/\s+$//e
+
+augroup ScalaRemoveWhiteSpaceOnSave
+  autocmd!
+  autocmd BufWritePre *.scala :%s/\s\+$//ge
+augroup END
 
 onoremap an :<c-u>call <SID>NextTextObject('a', 'f')<cr>
 xnoremap an :<c-u>call <SID>NextTextObject('a', 'f')<cr>

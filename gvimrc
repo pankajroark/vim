@@ -41,11 +41,10 @@ noremap <D-j> :BetterScalaJump<CR>
 " This has been remapped for easy motion
 "noremap <D-k> <C-w>p
 
-" Source the vimrc file after saving it
-augroup VimrcLoad
+" Source the gvimrc file after saving it
+augroup GVimrcReload
   autocmd!
   autocmd bufwritepost .gvimrc source $MYGVIMRC
-  autocmd bufwritepost .vimrc source $MYVIMRC
 augroup END
 
 noremap <leader>v :tabedit $MYVIMRC<CR>
@@ -66,9 +65,6 @@ map <C-h> :vertical resize -5<cr>
 
 map <D-e> <C-e>
 
-" Remove trailing whitespace, remember leader x is for replace
-map <leader>xs :%s/\s\+$//<CR>
-
 " Ruby debugging
 let g:ruby_debugger_progname = 'mvim'
 
@@ -84,12 +80,6 @@ let g:miniBufExplMapCTabSwitchBufs = 1
 let g:Powerline_symbols = 'fancy'
 set laststatus=2
 
-"pig
-augroup Filetypedetect 
-  autocmd!
-  au BufNewFile,BufRead *.pig set filetype=pig syntax=pig 
-augroup END 
-
 "macvim fullscreen
 if has("gui_running")
   "set fuoptions=maxvert,maxhorz
@@ -101,11 +91,6 @@ endif
 
 " Set a large font
 set guifont=Menlo\ Regular:h17
-augroup ReadBuildFileAsRuby
-  autocmd!
-  au! BufRead,BufNewFile buildfile set filetype=ruby
-augroup END
-
 " Don't interpret numbers starting with 0 as octal
 set nrformats=
 
@@ -254,7 +239,6 @@ if has("gui_running")
 endif
 
 set transparency=2
-autocmd BufWritePre *.scala :%s/\s+$//e
 set macmeta
 
 function! CGitPathToClipBoard()
