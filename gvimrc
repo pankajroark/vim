@@ -162,14 +162,14 @@ endif
 set transparency=2
 
 function! CGitPathToClipBoard()
-  let a:cur_path = expand('%:p')
+  let cur_path = expand('%:p')
   let git_root_abs_path = substitute(system('git rev-parse --show-toplevel'), '\n$', "", "")
-  let file_relative_path = substitute(a:cur_path, git_root_abs_path, "", "")
+  let file_relative_path = substitute(cur_path, git_root_abs_path, "", "")
   let remote_repo = system('git remote -v | head -n 1 | awk ''{ print $2 }'' | sed ''s/git/cgit/''')
   let repo = substitute(remote_repo, '\n$', "", "")
-  let a:cg_path = repo."/tree".file_relative_path."#n".line('.')
-  let @* = a:cg_path
-  echo a:cg_path
+  let cg_path = repo."/tree".file_relative_path."#n".line('.')
+  let @* = cg_path
+  echo cg_path
 endfunction
 
 nnoremap <F7> :call CGitPathToClipBoard()<cr>
