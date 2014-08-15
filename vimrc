@@ -528,3 +528,10 @@ set undodir=/Users/pankajg/.vimundo
 " backspace to go to beginning of file
 nnoremap <BS> gg
 nnoremap <Del> G
+
+if has("unix")
+  let uname = substitute(system("uname -s"), '\n$', "", "")
+  if uname == "Darwin"
+    let $PYTHONHOME='/System/Library/Frameworks/Python.framework/Versions/Current'
+  endif
+endif
