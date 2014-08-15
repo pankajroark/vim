@@ -195,6 +195,17 @@ fun! Next_buffer_or_next_tab()
   endif
 endf
 
+noremap <S-Tab> :call Previous_window()<cr>
+fun! Previous_window()
+  let cur_win_nr = winnr()
+  let num_windows = len(tabpagebuflist())
+  let prev_win_nr = cur_win_nr - 1
+  if (prev_win_nr < 1)
+    let prev_win_nr = num_windows
+  endif
+  :exe "normal " . prev_win_nr . "\<C-w>\<C-w>"
+endf
+
 nnoremap <leader>j :%! python -mjson.tool<cr>
 
 set updatetime=3000
@@ -450,3 +461,11 @@ nnoremap <leader>p :silent ! dot -Tpng % > /tmp/test.png; open /tmp/test.png <CR
 " Moving to lines with same indentation
 nnoremap <M-,> :call search('^'. matchstr(getline('.'), '\(^\s*\)') .'\%<' . line('.') . 'l\S', 'be')<CR>
 nnoremap <M-.> :call search('^'. matchstr(getline('.'), '\(^\s*\)') .'\%>' . line('.') . 'l\S', 'e')<CR>
+
+" Set persistent undo
+set undofile
+set undodir=/Users/pankajg/.vimundo
+
+" backspace to go to beginning of file
+nnoremap <BS> gg
+nnoremap <Del> G
