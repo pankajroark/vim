@@ -87,15 +87,10 @@ augroup resCur
   autocmd BufWinEnter * call ResCur()
 augroup END
 
-" Load NerdTree by default
-"autocmd vimenter * NERDTree
 
 " Map NerdTree
 nmap <F5> :NERDTreeToggle<CR>
 nmap <F6> :TagbarToggle<CR>
-
-" Remember leader n stands for nerdtree in general
-nmap <leader>nf :NERDTreeFind<CR>
 
 " This has been assigned to jump to definition
 "nmap <D-j> <C-w><C-w>
@@ -104,12 +99,99 @@ nmap <D-k> <C-w>p
 " Source the vimrc file after saving it
 augroup VimrcReload
   autocmd!
-if has("autocmd")
-  autocmd bufwritepost .vimrc source $MYVIMRC
-endif
+  if has("autocmd")
+    autocmd bufwritepost .vimrc source $MYVIMRC
+  endif
 augroup end
 
+" Remember leader n stands for nerdtree in general
+nmap <leader>nf :NERDTreeFind<CR>
+" Open vimrc in new tab
 nmap <leader>v :tabedit $MYVIMRC<CR>
+" Remove trailing whitespace, remember leader x is for replace
+map <leader>xs :%s/\s\+$//<CR>
+" pretty print python
+nnoremap <leader>j :%! python -mjson.tool<cr>
+" Pull word under cursor into LHS of a substitute, pretty neat
+nmap <leader>z :%s/\<<c-r>=expand("<cword>")<cr>\>/
+" Pull Visually Highlighted text into LHS of a substitute
+vmap <leader>z <Esc>:%s/<c-r>=GetVisual()<cr>/
+
+function! EscapeString (string)
+  let string=a:string
+  " Escape regex characters
+  let string = escape(string, '^$.*\/~[]')
+  " Escape the line endings
+  let string = substitute(string, '\n', '\\n', 'g')
+  return string
+endfunction
+
+function! GetVisual() range
+  " Save the current register and clipboard
+  let reg_save = getreg('"')
+  let regtype_save = getregtype('"')
+  let cb_save = &clipboard
+  set clipboard&
+
+  " Put the current visual selection in the " register
+  normal! ""gvy
+  let selection = getreg('"')
+
+  " Put the saved registers and clipboards back
+  call setreg('"', reg_save, regtype_save)
+  let &clipboard = cb_save
+
+  "Escape any special characters in the selection
+  let escaped_selection = EscapeString(selection)
+
+  return escaped_selection
+endfunction
+
+" Unite.vim customizations
+let g:unite_data_directory='~/.vim/.cache/unite'
+let g:unite_source_rec_max_cache_files = 200000
+call unite#custom#source('file_rec/async', 'max_candidates', 20)
+noremap <leader>b :<C-u>Unite buffer<CR>
+let g:unite_source_history_yank_enable = 1
+nnoremap <leader>y :<C-u>Unite history/yank<CR>
+
+" Sideways mapping (swap function params)
+nnoremap <leader><right> :SidewaysRight<cr>
+nnoremap <leader><left>  :SidewaysLeft<cr>
+
+" Ctrlp mappings
+noremap <leader>m :CtrlPMRU<CR>
+noremap <leader>a :CtrlPMixed<CR>
+
+" preview dot file
+nnoremap <leader>p :silent ! dot -Tpng % > /tmp/test.png; open /tmp/test.png <CR>
+
+" quote a word
+nnoremap <leader>" viw<esc>a"<esc>hbi"<esc>lel
+nnoremap <leader>' viw<esc>a'<esc>hbi'<esc>lel
+vnoremap <leader>" <esc>a"<esc>`<i"<esc>`>
+
+
+nnoremap <leader>g :set operatorfunc=<SID>GrepOperator<cr>g@
+vnoremap <leader>g :<c-u>call <SID>GrepOperator(visualmode())<cr>
+
+function! s:GrepOperator(type)
+    let saved_unnamed_register = @@
+
+    if a:type ==# 'v'
+        normal! `<v`>y
+    elseif a:type ==# 'char'
+        normal! `[v`]y
+    else
+        return
+    endif
+
+    let @/ = @@
+    silent execute "Ack! " . shellescape(@@) . " ."
+
+    let @@ = saved_unnamed_register
+endfunction
+
 nmap <C-S-c> :s/^/#/<CR>j
 
 
@@ -121,12 +203,6 @@ colorscheme solarized
 
 map <D-e> <C-e>
 
-" Remove trailing whitespace, remember leader x is for replace
-map <leader>xs :%s/\s\+$//<CR>
-
-" Ruby debugging
-let g:ruby_debugger_progname = 'mvim'
-
 "neocomplcache
 let g:neocomplcache_enable_at_startup = 1
 let g:ackprg="ack -i -H --nocolor --nogroup --column"
@@ -137,6 +213,15 @@ let g:miniBufExplMapCTabSwitchBufs = 1
 "powerline
 let g:Powerline_symbols = 'fancy'
 set laststatus=2
+
+" Don't interpret numbers starting with 0 as octal
+set nrformats=
+
+" auto save on buffer switching
+set autowriteall
+
+" Mapping for current file path on ex
+cnoremap <expr> %% getcmdtype() == ':' ? expand('%:h').'/' : '%%'
 
 " file type detections
 augroup Filetypedetect 
@@ -206,8 +291,6 @@ fun! Previous_window()
   :exe "normal " . prev_win_nr . "\<C-w>\<C-w>"
 endf
 
-nnoremap <leader>j :%! python -mjson.tool<cr>
-
 set updatetime=3000
 augroup AutomaticSave
   autocmd!
@@ -224,7 +307,7 @@ fun! Save_if_writable()
   endif
 endf  
 
-" rather drastic no swap file
+" rather drastic, no swap file
 set noswapfile
 
 noremap <C-w>1 :only<cr>
@@ -240,9 +323,9 @@ augroup END
 " Another mapping for escape
 inoremap jk <esc>
 
-imap ;pn println()<left>
-imap ;cl console.log("");<left><left><left>
-imap ;sn System.out.println();<left><left>
+"imap ;pn println()<left>
+"imap ;cl console.log("");<left><left><left>
+"imap ;sn System.out.println();<left><left>
 
 " nnoremap <space> :silent execute "Ack! " . shellescape(expand("<cword>"))<cr> 
 nnoremap <space> :w<cr>
@@ -264,7 +347,7 @@ function! ConditionalPairMap(open, close, nextLine)
   endif
 endf
 "inoremap <expr> ( ConditionalPairMap('(', ')', 0)
-inoremap <expr> { ConditionalPairMap('{', '}', 0)
+"inoremap <expr> { ConditionalPairMap('{', '}', 0)
 "inoremap <expr> [ ConditionalPairMap('[', ']', 0)
 "inoremap <expr> (<cr> ConditionalPairMap('(', ')', 1)
 "inoremap <expr> {<cr> ConditionalPairMap('{', '}', 1)
@@ -325,11 +408,6 @@ augroup MySessions
 augroup end
 "au VimEnter * call GitSessionRestore()
 
-" Pull word under cursor into LHS of a substitute
-:nmap <leader>z :%s#\<<c-r>=expand("<cword>")<cr>\>#
-" Pull Visually Highlighted text into LHS of a substitute
-:vmap <leader>z :<C-U>%s/\<<c-r>*\>/
-
 " Make Y behave like C and D"
 nmap Y y$
 
@@ -368,7 +446,7 @@ set clipboard=unnamed
 " Mapping for Yank Ring
 "nnoremap <silent> <F7> :YRShow<CR>
 
-" map c-j to escapre
+" map c-j to escape
 inoremap <C-j> <Esc>
 " map c-s to save
 inoremap <C-s> <Esc>:w<cr>
@@ -390,14 +468,6 @@ augroup BgHighlight
   autocmd WinEnter * set colorcolumn=81
   autocmd WinLeave * set colorcolumn=0
 augroup END
-
-" Unite.vim customizations
-let g:unite_data_directory='~/.vim/.cache/unite'
-let g:unite_source_rec_max_cache_files = 200000
-call unite#custom#source('file_rec/async', 'max_candidates', 20)
-noremap <leader>b :<C-u>Unite buffer<CR>
-let g:unite_source_history_yank_enable = 1
-nnoremap <leader>y :<C-u>Unite history/yank<CR>
 
 if executable('ag')
   let g:unite_source_rec_async_command= 'ag --nocolor --nogroup -g "scala"'
@@ -424,10 +494,6 @@ augroup rainbow
   au Syntax * RainbowParenthesesLoadBraces
 augroup END
 
-" Sideways mapping (swap function params)
-nnoremap <leader><right> :SidewaysRight<cr>
-nnoremap <leader><left>  :SidewaysLeft<cr>
-
 " Let ctrlp ignore gitignore files
 let g:ctrlp_working_path_mode = 2
 let g:ctrlp_clear_cache_on_exit = 0
@@ -441,10 +507,6 @@ set wildignore+=*.so,*.class,*.o,*.jar,*.swp,*.zip
 let g:ctrlp_match_window = 'bottom,order:btt,min:1,max:10,results:10'
 let g:ctrlp_match_func = {'match' : 'matcher#cmatch' }
 
-" Ctrlp mappings
-noremap <leader>m :CtrlPMRU<CR>
-noremap <leader>a :CtrlPMixed<CR>
-
 " command mode mappings
 cnoremap <C-a> <Home>
 cnoremap <C-e> <End>
@@ -454,9 +516,6 @@ cnoremap <C-b> <S-Left>
 cnoremap <C-f> <S-Right>
 cnoremap <M-b> <S-Left>
 cnoremap <M-f> <S-Right>
-
-" preview dot file
-nnoremap <leader>p :silent ! dot -Tpng % > /tmp/test.png; open /tmp/test.png <CR>
 
 " Moving to lines with same indentation
 nnoremap <M-,> :call search('^'. matchstr(getline('.'), '\(^\s*\)') .'\%<' . line('.') . 'l\S', 'be')<CR>

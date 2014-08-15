@@ -1,43 +1,13 @@
 syntax on
 filetype plugin indent on
 
-set ic
-set incsearch
-set autoindent
-set tabstop=2            " number of spaces to indent when tab-key is pressed
-set shiftwidth=2         " number of space characters inserted for indentation
-set expandtab            " insert space characters whenever the tab key is pressed
-
-set scrolloff=5
-set tags=./tags;/
-set cursorline
-
-set viminfo='10,\"100,:20,%,n~/.viminfo
-function! ResCur()
-  if line("'\"") <= line("$")
-    normal! g`"
-    return 1
-  endif
-endfunction
-
-augroup ResCur
-  autocmd!
-  autocmd BufWinEnter * call ResCur()
-augroup END
-
 " Load NerdTree by default
 "autocmd vimenter * NERDTree
 
-" Map NerdTree
-nnoremap <F5> :NERDTreeToggle<CR>
-nnoremap <F6> :TagbarToggle<CR>
-
-" Remember leader n stands for nerdtree in general
-nnoremap <leader>nf :NERDTreeFind<CR>
-
 " This has been remapped to jump to definition
 "noremap <D-j> <C-w><C-w>
-noremap <D-j> :BetterScalaJump<CR>
+noremap <D-j> :ScalaJump<CR>
+noremap <D-k> :ScalaProjFind<CR>
 " This has been remapped for easy motion
 "noremap <D-k> <C-w>p
 
@@ -47,17 +17,13 @@ augroup GVimrcReload
   autocmd bufwritepost .gvimrc source $MYGVIMRC
 augroup END
 
-noremap <leader>v :tabedit $MYVIMRC<CR>
 noremap <leader>xt :tabedit ~/Dropbox/pankaj/docs/techie/lists/todo<CR>
 noremap <leader>xy :tabedit ~/Dropbox/pankaj/docs/techie/lists/scratch<CR>
 noremap <leader>k :tabedit $HOME/Dropbox/pankaj/funda<CR>
-noremap <C-S-c> :s/^/#/<CR>j
 
 set macmeta
 
-map <M-up> :vertical resize +5<cr>
 map <C-l> :vertical resize +5<cr>
-map <M-down> :vertical resize -5<cr>
 map <C-h> :vertical resize -5<cr>
 
 " set background=dark
@@ -67,18 +33,6 @@ map <D-e> <C-e>
 
 " Ruby debugging
 let g:ruby_debugger_progname = 'mvim'
-
-"neocomplcache
-let g:neocomplcache_enable_at_startup = 1
-""let g:ackprg="ack -H --nocolor --nogroup --column"
-" Use ag instead of ack for searching
-let g:ackprg = 'ag --nogroup --nocolor --column'
-" minibufexplorer
-let g:miniBufExplMapCTabSwitchBufs = 1
-
-"powerline
-let g:Powerline_symbols = 'fancy'
-set laststatus=2
 
 "macvim fullscreen
 if has("gui_running")
@@ -91,8 +45,6 @@ endif
 
 " Set a large font
 set guifont=Menlo\ Regular:h17
-" Don't interpret numbers starting with 0 as octal
-set nrformats=
 
 " Command - T helpers
 function! Git_Root() " Get the relative path to repo root
@@ -142,14 +94,8 @@ endfunction
 nnoremap <LEADER>cti :call WildignoreFromGitignore()<cr>
 nnoremap <LEADER>cwi :set wildignore=''<cr>:echo 'Wildignore cleared'<cr>
 
-" Mapping for current file path on ex
-cnoremap <expr> %% getcmdtype() == ':' ? expand('%:h').'/' : '%%'
-
 " set dictionary
 set dictionary +=~/.vim/dict
-
-" auto save on buffer switching
-set autowriteall
 
 " map semicolon to enter
 " inoremap <C-;> <cr>
@@ -176,33 +122,8 @@ nnoremap _ ddkP
 " correct receive
 iabbrev recieve receive
 
-" quote a word
-nnoremap <leader>" viw<esc>a"<esc>hbi"<esc>lel
-nnoremap <leader>' viw<esc>a'<esc>hbi'<esc>lel
-vnoremap <leader>" <esc>a"<esc>`<i"<esc>`>
-
-" Another mapping for escape
+" Open other buffer in a vertical split
 noremap ,p :execute "rightbelow vsplit ".bufname("#")<cr>
-
-nnoremap <leader>g :set operatorfunc=<SID>GrepOperator<cr>g@
-vnoremap <leader>g :<c-u>call <SID>GrepOperator(visualmode())<cr>
-
-function! s:GrepOperator(type)
-    let saved_unnamed_register = @@
-
-    if a:type ==# 'v'
-        normal! `<v`>y
-    elseif a:type ==# 'char'
-        normal! `[v`]y
-    else
-        return
-    endif
-
-    let @/ = @@
-    silent execute "Ack! " . shellescape(@@) . " ."
-
-    let @@ = saved_unnamed_register
-endfunction
 
 "nnoremap <F7> :call SaveAndMake()
 
@@ -239,16 +160,14 @@ if has("gui_running")
 endif
 
 set transparency=2
-set macmeta
 
 function! CGitPathToClipBoard()
   let a:cur_path = expand('%:p')
-  let a:parts = split(a:cur_path, "workspace")
-  let a:rel_path = a:parts[1]
-  let a:rel_path_parts = split(a:rel_path, '/')
-  let a:repo = a:rel_path_parts[0]
-  let a:path = join(a:rel_path_parts[1:], '/')
-  let a:cg_path = "https://cgit.twitter.biz/".a:repo."/tree/".a:path."#n".line('.')
+  let git_root_abs_path = substitute(system('git rev-parse --show-toplevel'), '\n$', "", "")
+  let file_relative_path = substitute(a:cur_path, git_root_abs_path, "", "")
+  let remote_repo = system('git remote -v | head -n 1 | awk ''{ print $2 }'' | sed ''s/git/cgit/''')
+  let repo = substitute(remote_repo, '\n$', "", "")
+  let a:cg_path = repo."/tree".file_relative_path."#n".line('.')
   let @* = a:cg_path
   echo a:cg_path
 endfunction
