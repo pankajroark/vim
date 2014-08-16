@@ -503,7 +503,7 @@ let g:ctrlp_by_filename = 1
 let g:ctrlp_mruf_max = 1000
 set wildignore+=*.so,*.class,*.o,*.jar,*.swp,*.zip
 " Jump to only scala or java files
-" let g:ctrlp_user_command = ['.git/', 'cd %s && git ls-files | grep "\(scala\|java\)"']
+let g:ctrlp_user_command = ['.git/', 'cd %s && git ls-files | grep "\(scala\|java\|thrift\|py|sh|rb\)"']
 let g:ctrlp_match_window = 'bottom,order:btt,min:1,max:10,results:10'
 let g:ctrlp_match_func = {'match' : 'matcher#cmatch' }
 
@@ -535,3 +535,6 @@ if has("unix")
     let $PYTHONHOME='/System/Library/Frameworks/Python.framework/Versions/Current'
   endif
 endif
+
+" disable vim-pasta from nerdtree
+let g:pasta_disabled_filetypes = ['nerdtree']
