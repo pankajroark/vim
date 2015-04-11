@@ -1,6 +1,9 @@
 syntax on
 filetype plugin indent on
 
+call vundle#begin()
+Plugin 'vim-scripts/TagHighlight'
+call vundle#end()
 " Load NerdTree by default
 "autocmd vimenter * NERDTree
 
@@ -17,7 +20,7 @@ augroup GVimrcReload
   autocmd bufwritepost .gvimrc source $MYGVIMRC
 augroup END
 
-noremap <leader>xt :tabedit ~/Dropbox/pankaj/docs/techie/lists/todo<CR>
+"noremap <leader>xt :tabedit ~/Dropbox/pankaj/docs/techie/lists/todo<CR>
 noremap <leader>xy :tabedit ~/Dropbox/pankaj/docs/techie/lists/scratch<CR>
 noremap <leader>k :tabedit $HOME/Dropbox/pankaj/funda<CR>
 
@@ -25,9 +28,6 @@ set macmeta
 
 map <C-l> :vertical resize +5<cr>
 map <C-h> :vertical resize -5<cr>
-
-" set background=dark
-" colorscheme inkpot
 
 map <D-e> <C-e>
 
@@ -43,8 +43,17 @@ endif
 "CloseMiniBufExplorer by default
 "map <F7> :TMiniBufExplorer<CR>
 
-" Set a large font
-set guifont=Menlo\ Regular:h17
+" Set font size based on screen size. When vertical height is greater than 900
+" (i.e. an external monitor is attached on 13" or smaller MacBooks), use 18, else use 16.
+if has('mac')
+  if system("osascript -e 'tell application \"Finder\" to get bounds of window of desktop' | cut -d ' ' -f 4") > 900
+    "set guifont=Menlo\ Regular:h18
+    set guifont=Inconsolata:h18
+  else
+    "set guifont=Menlo\ Regular:h14
+    set guifont=Inconsolata:h14
+  endif
+endif
 
 " Command - T helpers
 function! Git_Root() " Get the relative path to repo root
@@ -68,31 +77,6 @@ function! CD_Git_Root()
     echo 'CWD now set to: '.curdir
 endfunction
 nnoremap <LEADER>gr :call CD_Git_Root()<cr>
-
-" Define the wildignore from gitignore. Primarily for CommandT
-function! WildignoreFromGitignore()
-    silent call CD_Git_Root()
-    let gitignore = '.gitignore'
-    if filereadable(gitignore)
-        let igstring = ''
-        for oline in readfile(gitignore)
-            let line = substitute(oline, '\s|\n|\r', '', "g")
-            if line =~ '^#' | con | endif
-            if line == '' | con  | endif
-            if line =~ '^!' | con  | endif
-            if line =~ '/$' | let igstring .= "," . line . "*" | con | endif
-            let igstring .= "," . line
-        endfor
-        let execstring = "set wildignore=".substitute(igstring,'^,','',"g")
-        execute execstring
-        echo 'Wildignore defined from gitignore in: '.getcwd()
-    else
-        echo 'Unable to find gitignore'
-    endif
-endfunction
-
-nnoremap <LEADER>cti :call WildignoreFromGitignore()<cr>
-nnoremap <LEADER>cwi :set wildignore=''<cr>:echo 'Wildignore cleared'<cr>
 
 " set dictionary
 set dictionary +=~/.vim/dict
@@ -152,7 +136,7 @@ endfun
 
 nnoremap <leader>r :call OpenReadme()<cr>
 "Yankring
-nnoremap <silent> <C-space> :YRShow<CR>
+"nnoremap <silent> <C-space> :YRShow<CR>
 
 " disable toolbar, don't need it
 if has("gui_running")
@@ -173,6 +157,13 @@ function! CGitPathToClipBoard()
 endfunction
 
 nnoremap <F7> :call CGitPathToClipBoard()<cr>
+
+function! FullPathToClipBoard()
+  let cur_path = expand('%:p')
+  let @* = cur_path
+  echo cur_path
+endfunction
+nnoremap <F4> :call FullPathToClipBoard()<cr>
 
 " Easy motion  + colors
 map <C-j> <Plug>(easymotion-W)

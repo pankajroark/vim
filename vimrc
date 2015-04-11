@@ -3,56 +3,71 @@ call pathogen#infect()
 set nocompatible              " be iMproved
 filetype off                  " required!
 
-set rtp+=~/.vim/bundle/vundle/
-call vundle#rc()
-
-Bundle 'gmarik/vundle'
-Bundle 'scrooloose/nerdtree.git'
-Bundle 'mileszs/ack.vim.git'
-Bundle 'Shougo/neocomplcache.git'
-Bundle 'ervandew/supertab.git'
-Bundle 'majutsushi/tagbar.git'
-Bundle 'tpope/vim-endwise'
-Bundle 'tpope/vim-fugitive.git'
-Bundle 'vim-ruby/vim-ruby.git'
-Bundle 'tpope/vim-unimpaired.git'
-"Bundle 'altercation/vim-colors-solarized.git'
-Bundle 'nelstrom/vim-textobj-rubyblock.git'
-Bundle 'kana/vim-textobj-user.git'
-Bundle 'edsono/vim-matchit.git'
-Bundle 'bkad/CamelCaseMotion.git'
-Bundle 'kien/ctrlp.vim.git'
-Bundle 'altercation/vim-colors-solarized.git'
-Bundle 'pankajroark/vim-scala.git'
-Bundle 'scrooloose/nerdcommenter.git'
-Bundle 'jakar/vim-json.git'
-Bundle 'ciaranm/inkpot.git'
-Bundle 'flazz/vim-colorschemes.git'
-Bundle 'rodjek/vim-puppet.git'
-Bundle 'uarun/vim-protobuf.git'
-Bundle 'ton/vim-bufsurf.git'
-Bundle 'ktvoelker/sbt-vim.git'
-Bundle 'jigish/vim-thrift.git'
-Bundle 'sprsquish/thrift.vim.git'
-Bundle 'tpope/vim-surround.git'
-Bundle 'maxbrunsfeld/vim-yankstack'
-Bundle 'bling/vim-airline'
-Bundle 'sickill/vim-pasta'
-Bundle 'skwp/greplace.vim'
-Bundle 'vim-scripts/genutils'
-Bundle 'pankajroark/vim-scala-jump'
-Bundle 'Lokaltog/vim-easymotion'
-Bundle 'Shougo/unite.vim'
-Bundle 'msanders/cocoa.vim'
-Bundle 'kien/rainbow_parentheses.vim'
-Bundle 'tpope/timl.git'
-Bundle 'AndrewRadev/sideways.vim'
-Bundle 'Shougo/vimproc.vim'
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+Plugin 'gmarik/vundle'
+Plugin 'scrooloose/nerdtree.git'
+Plugin 'mileszs/ack.vim.git'
+Plugin 'Shougo/neocomplcache.git'
+Plugin 'ervandew/supertab.git'
+Plugin 'majutsushi/tagbar.git'
+Plugin 'tpope/vim-endwise'
+Plugin 'tpope/vim-fugitive.git'
+Plugin 'vim-ruby/vim-ruby.git'
+Plugin 'tpope/vim-unimpaired.git'
+"Plugin 'altercation/vim-colors-solarized.git'
+Plugin 'nelstrom/vim-textobj-rubyblock.git'
+Plugin 'kana/vim-textobj-user.git'
+Plugin 'edsono/vim-matchit.git'
+Plugin 'bkad/CamelCaseMotion.git'
+Plugin 'kien/ctrlp.vim.git'
+Plugin 'altercation/vim-colors-solarized.git'
+Plugin 'pankajroark/vim-scala.git'
+Plugin 'pankajroark/pgf.git'
+Plugin 'scrooloose/nerdcommenter.git'
+Plugin 'jakar/vim-json.git'
+Plugin 'ciaranm/inkpot.git'
+Plugin 'flazz/vim-colorschemes.git'
+Plugin 'rodjek/vim-puppet.git'
+Plugin 'uarun/vim-protobuf.git'
+Plugin 'ton/vim-bufsurf.git'
+Plugin 'ktvoelker/sbt-vim.git'
+Plugin 'jigish/vim-thrift.git'
+Plugin 'sprsquish/thrift.vim.git'
+Plugin 'tpope/vim-surround.git'
+Plugin 'maxbrunsfeld/vim-yankstack'
+"Plugin 'bling/vim-airline'
+Plugin 'sickill/vim-pasta'
+Plugin 'skwp/greplace.vim'
+Plugin 'vim-scripts/genutils'
+Plugin 'pankajroark/vim-scala-jump'
+Plugin 'Lokaltog/vim-easymotion'
+"Plugin 'Shougo/unite.vim'
+"Plugin 'msanders/cocoa.vim'
+Plugin 'kien/rainbow_parentheses.vim'
+"Plugin 'tpope/timl.git'
+Plugin 'AndrewRadev/sideways.vim'
+"Plugin 'Shougo/vimproc.vim'
 " Needs building https://github.com/JazzCore/ctrlp-cmatcher
-Bundle 'JazzCore/ctrlp-cmatcher'
-Bundle 'mikewest/vimroom'
-Bundle 'wting/rust.vim'
-Bundle 'oplatek/Conque-Shell'
+Plugin 'JazzCore/ctrlp-cmatcher'
+Plugin 'mikewest/vimroom'
+"Plugin 'wting/rust.vim'
+"Plugin 'oplatek/Conque-Shell'
+Plugin 'kshenoy/vim-signature'
+Plugin 'haya14busa/incsearch.vim'
+" Plugin 'Valloric/YouCompleteMe'
+" Plugin 'scrooloose/syntastic'
+Plugin 'pankajroark/ag.vim'
+Plugin 'wincent/command-t'
+Plugin 'jceb/vim-orgmode'
+Plugin 'tpope/vim-speeddating'
+"Plugin 'xolox/vim-easytags'
+"Plugin 'xolox/vim-misc'
+Plugin 'nathanaelkane/vim-indent-guides'
+Plugin 'Raimondi/delimitMate'
+Plugin 'pankajroark/vim-scajum'
+" Plugin 'jistr/vim-nerdtree-tabs'
+call vundle#end()
 
 set tabstop=2            " number of spaces to indent when tab-key is pressed
 set shiftwidth=2         " number of space characters inserted for indentation
@@ -66,11 +81,13 @@ set autoindent
 set tabstop=2            " number of spaces to indent when tab-key is pressed
 set shiftwidth=2         " number of space characters inserted for indentation
 set expandtab            " insert space characters whenever the tab key is pressed
+set history=1000
 
 set scrolloff=5
 set tags=./tags;/
 set cursorline
 set relativenumber
+set number
 set nf=octal,hex,alpha
 
 set viminfo='10,\"100,:20,%,n~/.viminfo
@@ -148,12 +165,11 @@ function! GetVisual() range
 endfunction
 
 " Unite.vim customizations
-let g:unite_data_directory='~/.vim/.cache/unite'
-let g:unite_source_rec_max_cache_files = 200000
-call unite#custom#source('file_rec/async', 'max_candidates', 20)
-noremap <leader>b :<C-u>Unite buffer<CR>
-let g:unite_source_history_yank_enable = 1
-nnoremap <leader>y :<C-u>Unite history/yank<CR>
+"let g:unite_data_directory='~/.vim/.cache/unite'
+"let g:unite_source_rec_max_cache_files = 200000
+"call unite#custom#source('file_rec/async', 'max_candidates', 20)
+"let g:unite_source_history_yank_enable = 1
+"nnoremap <leader>y :<C-u>Unite history/yank<CR>
 
 " Sideways mapping (swap function params)
 nnoremap <leader><right> :SidewaysRight<cr>
@@ -162,6 +178,7 @@ nnoremap <leader><left>  :SidewaysLeft<cr>
 " Ctrlp mappings
 noremap <leader>m :CtrlPMRU<CR>
 noremap <leader>a :CtrlPMixed<CR>
+noremap <leader>b :CommandTBuffer<CR>
 
 " preview dot file
 nnoremap <leader>p :silent ! dot -Tpng % > /tmp/test.png; open /tmp/test.png <CR>
@@ -194,12 +211,15 @@ endfunction
 
 nmap <C-S-c> :s/^/#/<CR>j
 
-
-set background=dark
-"colorscheme inkpot
-" colorscheme pyte
+set background=light
+" colorscheme inkpot
+if has("gui_macvim")
+  "colorscheme ir_black
+  colorscheme pyte
+else
+  colorscheme pyte
+endif
 " colorscheme molokai
-colorscheme solarized
 
 map <D-e> <C-e>
 
@@ -469,18 +489,18 @@ augroup BgHighlight
   autocmd WinLeave * set colorcolumn=0
 augroup END
 
-if executable('ag')
-  let g:unite_source_rec_async_command= 'ag --nocolor --nogroup -g "scala"'
-  let g:unite_source_grep_command = 'ag'
-  let g:unite_source_grep_default_opts =
-  \ '--line-numbers --nocolor --nogroup --hidden --ignore ' .
-  \  '''.hg'' --ignore ''.svn'' --ignore ''.git'' --ignore ''.bzr''' .
-  \ '--ignore ''.pants.d'''
-  let g:unite_source_grep_recursive_opt = ''
-  " Unite.vim fuzzy finder
-  call unite#filters#matcher_default#use(['matcher_fuzzy'])
-  nnoremap <leader>f :<C-u>Unite -start-insert file_rec<CR>
-endif
+"if executable('ag')
+"  let g:unite_source_rec_async_command= 'ag --nocolor --nogroup -g "scala"'
+"  let g:unite_source_grep_command = 'ag'
+"  let g:unite_source_grep_default_opts =
+"  \ '--line-numbers --nocolor --nogroup --hidden --ignore ' .
+"  \  '''.hg'' --ignore ''.svn'' --ignore ''.git'' --ignore ''.bzr''' .
+"  \ '--ignore ''.pants.d'''
+"  let g:unite_source_grep_recursive_opt = ''
+"  " Unite.vim fuzzy finder
+"  call unite#filters#matcher_default#use(['matcher_fuzzy'])
+"  nnoremap <leader>f :<C-u>Unite -start-insert file_rec<CR>
+"endif
 
 
 " Disable gui cursor blinking
@@ -488,10 +508,10 @@ set guicursor+=a:blinkon0
 
 augroup rainbow
   autocmd!
-  au BufWinEnter * RainbowParenthesesActivate
-  au Syntax * RainbowParenthesesLoadRound
-  au Syntax * RainbowParenthesesLoadSquare
-  au Syntax * RainbowParenthesesLoadBraces
+  au VimEnter * RainbowParenthesesActivate
+  au BufWinEnter  * RainbowParenthesesLoadRound
+  au BufWinEnter * RainbowParenthesesLoadSquare
+  au BufWinEnter * RainbowParenthesesLoadBraces
 augroup END
 
 " Let ctrlp ignore gitignore files
@@ -502,7 +522,7 @@ let g:ctrlp_max_depth = 40
 let g:ctrlp_by_filename = 1
 let g:ctrlp_mruf_max = 1000
 set wildignore+=*.so,*.class,*.o,*.jar,*.swp,*.zip
-" Jump to only scala or java files
+" Jump to only restricted set of files only
 let g:ctrlp_user_command = ['.git/', 'cd %s && git ls-files | grep "\(scala\|java\|thrift\|py|sh|rb\)"']
 let g:ctrlp_match_window = 'bottom,order:btt,min:1,max:10,results:10'
 let g:ctrlp_match_func = {'match' : 'matcher#cmatch' }
@@ -538,3 +558,48 @@ endif
 
 " disable vim-pasta from nerdtree
 let g:pasta_disabled_filetypes = ['nerdtree']
+
+" incsearch
+map /  <Plug>(incsearch-forward)
+map ?  <Plug>(incsearch-backward)
+map g/ <Plug>(incsearch-stay)
+
+" Fast current word search
+nmap <C-Space> :Pg!<cr>
+nmap <S-Space> :Pgf!<cr>
+
+" Command T
+let g:CommandTMaxFiles=40000
+let g:CommandTFileScanner="watchman"
+
+" Create a bookmark
+function! Bookmark()
+  redir >> $HOME/.vim/bookmarks
+  echo
+  echo strftime("%Y-%b-%d %a %H:%M").':'.expand("%:p").':'.line('.')
+  redir END
+endfunction
+nmap <M-b> :call Bookmark()<cr>
+nmap <C-M-b> :tabedit $HOME/.vim/bookmarks<cr>
+nmap <leader>o :!open -a Emacs %<cr>
+nnoremap Q :tabclose<cr>
+
+" Find implementation of a java interface
+nnoremap <leader>xm :execute("Pg \"implements \"".expand("<cword>"))<cr>
+
+" Find struct definition
+nnoremap <leader>xt :execute("Pg \"struct \"".expand("<cword>"))<cr>
+nnoremap <leader>xe :execute("Pg \"enum \"".expand("<cword>"))<cr>
+
+" Map for jumping to end of line in insert mode
+inoremap <C-e> <Esc>A
+
+fun! OpenToday()
+  execute 'vsplit '.system("today_log")
+endfun
+command! Today call OpenToday()
+noremap <M-t> :Today<cr>
+
+
+set statusline=%{system('echo\ -n\ $\(pwd\ -L\)')}%#Statement#/%f%=%m\ %y\ \%r\ %1*\ \%l\:\%c\ \%2*\ \ \%p%%\ \ 
+

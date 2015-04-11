@@ -1,0 +1,32 @@
+2014-Nov-22 Sat 11:15:/Users/pankajg/workspace/science/src/java/com/twitter/ads/admixer/guice/EventStoreGuiceModule.java:287
+
+2014-Nov-22 Sat 11:26:/Users/pankajg/workspace/science/src/java/com/twitter/ads/admixer/guice/EventStoreGuiceModule.java:1
+2014-Nov-22 Sat 11:31:/Users/pankajg/workspace/science/src/java/com/twitter/adserver/events/GuiceModule.java:432
+2014-Dec-01 Mon 07:50:/Users/pankajg/workspace/bc5/util/util-stats/src/main/scala/com/twitter/finagle/stats/StatsReceiver.scala:114
+2014-Dec-02 Tue 07:50:/Users/pankajg/workspace/science/src/java/com/twitter/adserver/serving/targeting/LineItemBasedAdSelector.java:195
+2014-Dec-03 Wed 12:01:/private/var/folders/xz/3rrzmt210xl7_nn_frsb7mh00000gn/T/vzUEsMo/8.fugitiveblame:341
+2014-Dec-03 Wed 12:01:/Users/pankajg/workspace/source/science/src/java/com/twitter/adserver/serving/targeting/LineItemBasedAdSelector.java:315
+2014-Dec-03 Wed 12:01:/Users/pankajg/workspace/source/science/src/java/com/twitter/adserver/serving/targeting/LineItemBasedAdSelector.java:315
+2014-Dec-03 Wed 12:01:/Users/pankajg/workspace/source/science/src/java/com/twitter/adserver/serving/targeting/LineItemBasedAdSelector.java:75
+2014-Dec-03 Wed 12:01:/Users/pankajg/workspace/source/science/src/java/com/twitter/adserver/serving/targeting/LineItemBasedAdSelector.java:75
+2014-Dec-03 Wed 12:01:/Users/pankajg/workspace/source/science/src/java/com/twitter/adserver/serving/targeting/LineItemBasedAdSelector.java:75
+2014-Dec-03 Wed 12:01:/Users/pankajg/workspace/source/science/src/java/com/twitter/adserver/serving/targeting/LineItemBasedAdSelector.java:75
+2014-Dec-03 Wed 12:01:/Users/pankajg/workspace/source/science/src/java/com/twitter/adserver/serving/targeting/LineItemBasedAdSelector.java:75
+2014-Dec-03 Wed 12:01:/Users/pankajg/workspace/source/science/src/java/com/twitter/adserver/serving/targeting/LineItemBasedAdSelector.java:75
+2014-Dec-03 Wed 12:01:/Users/pankajg/workspace/source/science/src/java/com/twitter/adserver/serving/targeting/LineItemBasedAdSelector.java:75
+2014-Dec-03 Wed 12:03:/Users/pankajg/.vimrc:576
+
+2014-Dec-03 Wed 12:03:/Users/pankajg/workspace/source/science/src/java/com/twitter/adserver/serving/targeting/LineItemBasedAdSelector.java:75
+2014-Dec-03 Wed 12:03:/Users/pankajg/workspace/source/science/src/java/com/twitter/adserver/serving/targeting/LineItemBasedAdSelector.java:75
+2014-Dec-03 Wed 12:03:/Users/pankajg/workspace/source/science/src/java/com/twitter/adserver/serving/targeting/LineItemBasedAdSelector.java:141
+2014-Dec-03 Wed 12:03:/Users/pankajg/workspace/source/science/src/java/com/twitter/adserver/serving/targeting/LineItemBasedAdSelector.java:141
+2014-Dec-03 Wed 12:03:/Users/pankajg/workspace/source/science/src/java/com/twitter/adserver/serving/targeting/LineItemBasedAdSelector.java:141
+2014-Dec-04 Thu 07:41:/Users/pankajg/workspace/source/science/src/java/com/twitter/adserver/serving/targeting/AdvertiserBasedLineItemSelector.java:120
+2014-Dec-04 Thu 08:22:/Users/pankajg/workspace/source/science/src/java/com/twitter/adserver/serving/targeting/constraint/CompatibleLineItemDeciderFactory.java:75
+2014-Dec-04 Thu 22:24:/Users/pankajg/workspace/source/science/src/java/com/twitter/adserver/serving/algo/GuiceModule.java:602
+2014-Dec-07 Sun 10:14:/Users/pankajg/workspace/source/science/src/python/twitter/ads/loadtester/stats_comparator.py:382
+2014-Dec-08 Mon 10:11:/Users/pankajg/workspace/source/science/src/java/com/twitter/adserver/serving/request/GuiceModule.java:39
+2014-Dec-08 Mon 11:15:/Users/pankajg/workspace/source/science/src/java/com/twitter/adserver/serving/targeting/AdvertiserBasedLineItemSelector.java:80 // Seem like the hot loop
+
+2014-Dec-17 Wed 13:00:/Users/pankajg/workspace/source/science/src/java/com/twitter/ads/admixer/guice/EventStoreGuiceModule.java:731
+2014-Dec-18 Thu 11:43:/Users/pankajg/workspace/source/science/tests/java/com/twitter/adserver/integration/base/IntegrationTestGuiceModule.java:564

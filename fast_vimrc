@@ -1,0 +1,147 @@
+set nocompatible              " be iMproved
+filetype off                  " required!
+
+set tabstop=2            " number of spaces to indent when tab-key is pressed
+set shiftwidth=2         " number of space characters inserted for indentation
+set expandtab            " insert space characters whenever the tab key is pressed
+syntax on
+filetype plugin indent on
+
+set ic
+set incsearch
+set autoindent
+set tabstop=2            " number of spaces to indent when tab-key is pressed
+set shiftwidth=2         " number of space characters inserted for indentation
+set expandtab            " insert space characters whenever the tab key is pressed
+
+set scrolloff=5
+set tags=./tags;/
+set cursorline
+set relativenumber
+set number
+set nf=octal,hex,alpha
+
+set clipboard=unnamed
+
+set rtp+=~/.vim/bundle/vundle/
+call vundle#rc()
+
+Plugin 'scrooloose/nerdtree.git'
+Plugin 'mileszs/ack.vim.git'
+Plugin 'tpope/vim-fugitive.git'
+Plugin 'Lokaltog/vim-easymotion'
+Plugin 'haya14busa/incsearch.vim'
+Plugin 'tpope/vim-unimpaired.git'
+Plugin 'pankajroark/vim-scala.git'
+Plugin 'pankajroark/ag.vim'
+Plugin 'wincent/command-t'
+
+" Remember leader n stands for nerdtree in general
+nmap <leader>nf :NERDTreeFind<CR>
+
+" Search in current directory
+nnoremap <leader>g :set operatorfunc=<SID>GrepOperator<cr>g@
+vnoremap <leader>g :<c-u>call <SID>GrepOperator(visualmode())<cr>
+
+function! s:GrepOperator(type)
+    let saved_unnamed_register = @@
+
+    if a:type ==# 'v'
+        normal! `<v`>y
+    elseif a:type ==# 'char'
+        normal! `[v`]y
+    else
+        return
+    endif
+
+    let @/ = @@
+    silent execute "Ack! " . shellescape(@@) . " ."
+
+    let @@ = saved_unnamed_register
+endfunction
+
+let g:ackprg="ack -i -H --nocolor --nogroup --column"
+
+" Tab mappings
+noremap <Tab> :call Next_buffer_or_next_tab()<cr>
+
+fun! Next_buffer_or_next_tab()
+  let num_buffers = len(tabpagebuflist())
+  echo num_buffers
+  if (num_buffers <= 1) 
+    :tabnext
+  else
+    :exe "normal \<C-w>\<C-w>"
+  endif
+endf
+
+noremap <S-Tab> :call Previous_window()<cr>
+fun! Previous_window()
+  let cur_win_nr = winnr()
+  let num_windows = len(tabpagebuflist())
+  let prev_win_nr = cur_win_nr - 1
+  if (prev_win_nr < 1)
+    let prev_win_nr = num_windows
+  endif
+  :exe "normal " . prev_win_nr . "\<C-w>\<C-w>"
+endf
+
+" Create a bookmark
+function! Bookmark()
+  redir >> $HOME/.vim/bookmarks
+  echo
+  echo strftime("%Y-%b-%d %a %H:%M").':'.expand("%:p").':'.line('.')
+  redir END
+endfunction
+nmap <C-b> :call Bookmark()<cr>
+nmap <leader>k :tabedit $HOME/.vim/bookmarks<cr>
+
+" Easy motion  + colors
+map <C-j> <Plug>(easymotion-W)
+map <C-k> <Plug>(easymotion-B)
+
+hi link EasyMotionTarget ErrorMsg
+hi link EasyMotionShade  Comment
+
+hi link EasyMotionTarget2First ErrorMsg
+hi link EasyMotionTarget2Second Function
+hi Search guibg=peru guifg=wheat
+
+" Fast current word search
+" Import the mapping really is for <C-Space>
+" This is really weird terminal.app interprets c-space as c-@ and thus the hack.
+nmap <C-@> :Pg<cr>
+
+
+" Ctrlp mappings
+noremap <leader>m :CtrlPMRU<CR>
+noremap <leader>a :CtrlPMixed<CR>
+noremap <leader>b :CtrlPBuffer<CR>
+
+" Let ctrlp ignore gitignore files
+let g:ctrlp_working_path_mode = 2
+let g:ctrlp_clear_cache_on_exit = 0
+let g:ctrlp_max_files = 0
+let g:ctrlp_max_depth = 40
+let g:ctrlp_by_filename = 1
+let g:ctrlp_mruf_max = 1000
+set wildignore+=*.so,*.class,*.o,*.jar,*.swp,*.zip
+" Jump to only restricted set of files only
+let g:ctrlp_user_command = ['.git/', 'cd %s && git ls-files | grep "\(scala\|java\|thrift\|py|sh|rb\)"']
+let g:ctrlp_match_window = 'bottom,order:btt,min:1,max:10,results:10'
+let g:ctrlp_match_func = {'match' : 'matcher#cmatch' }
+
+" file type detections
+augroup Filetypedetect 
+  autocmd!
+  au BufNewFile,BufRead *.scala set filetype=scala syntax=scala
+  au BufNewFile,BufRead *.pig set filetype=pig syntax=pig 
+  au BufNewFile,BufRead *.aurora set filetype=python syntax=python 
+  au BufNewFile,BufRead *.gradle set filetype=groovy
+  au BufNewFile,BufRead *.thrift set filetype=thrift syntax=thrift 
+  au BufNewFile,BufRead buildfile set filetype=ruby
+augroup END 
+
+" Command T
+let g:CommandTMaxFiles=40000
+let g:CommandTFileScanner="watchman"
