@@ -3,7 +3,7 @@ call pathogen#infect()
 set nocompatible              " be iMproved
 filetype off                  " required!
 
-set rtp+=~/.vim/bundle/Vundle.vim
+set rtp+=~/.vim/bundle/vundle
 call vundle#begin()
 " Plugin 'Valloric/YouCompleteMe'
 " Plugin 'scrooloose/syntastic'

@@ -103,3 +103,6 @@
 [submodule "bundle/YankRing"]
 	path = bundle/YankRing.vim
 	url = git@github.com:pankajroark/YankRing.vim.git
+[submodule "bundle/vundle"]
+	path = bundle/vundle
+	url = https://github.com/VundleVim/Vundle.vim

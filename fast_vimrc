@@ -24,7 +24,7 @@ set nf=octal,hex,alpha
 set clipboard=unnamed
 
 set rtp+=~/.vim/bundle/vundle/
-call vundle#rc()
+call vundle#begin()
 
 Plugin 'scrooloose/nerdtree.git'
 Plugin 'mileszs/ack.vim.git'
@@ -35,6 +35,7 @@ Plugin 'tpope/vim-unimpaired.git'
 Plugin 'pankajroark/vim-scala.git'
 Plugin 'pankajroark/ag.vim'
 Plugin 'wincent/command-t'
+call vundle#end()
 
 " Remember leader n stands for nerdtree in general
 nmap <leader>nf :NERDTreeFind<CR>
