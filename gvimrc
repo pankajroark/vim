@@ -1,9 +1,9 @@
 syntax on
 filetype plugin indent on
 
-call vundle#begin()
-Plugin 'vim-scripts/TagHighlight'
-call vundle#end()
+"call vundle#begin()
+"Plugin 'vim-scripts/TagHighlight'
+"call vundle#end()
 " Load NerdTree by default
 "autocmd vimenter * NERDTree
 

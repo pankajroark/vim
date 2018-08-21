@@ -23,7 +23,7 @@ set nf=octal,hex,alpha
 
 set clipboard=unnamed
 
-set rtp+=~/.vim/bundle/vundle/
+set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
 Plugin 'scrooloose/nerdtree.git'
